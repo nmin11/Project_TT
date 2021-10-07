@@ -8,3 +8,6 @@ spring:
     username: admin
     password: projecttt32
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  config:
+    domain: http://projecttt-client-bucket.s3-website.ap-northeast-2.amazonaws.com/

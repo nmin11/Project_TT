@@ -1,5 +1,3 @@
-import '../styles/DestinationReviews.css';
-
 function DestinationReviews() {
   return <h1>DestinationReviews</h1>;
 }

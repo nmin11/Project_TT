@@ -50,11 +50,10 @@ function Header() {
       .catch((err) => {
         console.error(err);
         console.log(`email = ${userData.email}, password = ${userData.password}`);
-
+        setUserLoginError('이메일 또는 비밀번호를 잘못 입력하셨습니다.');
         if (err.response) {
           // 에러에 response가 있으면 해당 data를 출력
           console.log(err.response.data);
-          setUserLoginError('이메일 또는 비밀번호를 잘못 입력하셨습니다.');
         }
       });
   };

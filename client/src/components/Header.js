@@ -120,9 +120,11 @@ function Header() {
             ) : null}
 
             <li>
-              <button className="nav-btn" onClick={togglePopup}>
+              <button className="text-link" onClick={togglePopup}>
                 로그인
               </button>
+            </li>
+            <li>
               <Link className="text-link" to="/signUp">
                 회원가입
               </Link>
@@ -146,6 +148,9 @@ function Header() {
         </Route>
         <Route exact path="/themeTravel">
           <ThemeTravel />
+        </Route>
+        <Route exact path="/myPage">
+          <Mypage />
         </Route>
       </Switch>
     </BrowserRouter>

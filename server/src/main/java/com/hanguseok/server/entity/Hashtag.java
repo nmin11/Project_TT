@@ -1,6 +1,7 @@
 package com.hanguseok.server.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 public class Hashtag {
 
     @Id @GeneratedValue

@@ -16,23 +16,13 @@ function Header() {
         <nav id="nav">
           <ul id="ul">
             <li>
-              <Link className="text-link" to="/popularDestination">
-                인기 여행지
+              <Link className="text-link" to="/themeTravel">
+                테마별 여행
               </Link>
             </li>
             <li>
               <Link className="text-link" to="/destinationReviews">
                 여행지 리뷰
-              </Link>
-            </li>
-            <li>
-              <Link className="text-link" to="/bestPhotos">
-                베스트 포토
-              </Link>
-            </li>
-            <li>
-              <Link className="text-link" to="/themeTravel">
-                테마별 여행
               </Link>
             </li>
             <li>마이 페이지</li>
@@ -42,6 +32,9 @@ function Header() {
         </nav>
       </header>
       <Switch>
+        <Route exact path="/">
+          <ThemeTravel />
+        </Route>
         <Route exact path="/popularDestination">
           <PopularDestination />
         </Route>

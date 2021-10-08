@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import PopularDestination from './PopularDestination';
 import DestinationReviews from './DestinationReviews';
+import Signup from './Signup';
 import BestPhotos from './BestPhotos';
 import ThemeTravel from './ThemeTravel';
 import '../styles/Header.css';
@@ -37,7 +38,11 @@ function Header() {
             </li>
             <li>마이 페이지</li>
             <li>로그인</li>
-            <li>회원가입</li>
+            <li>
+              <Link className="text-link" to="/signUp">
+                회원가입
+              </Link>
+            </li>
           </ul>
         </nav>
       </header>
@@ -53,6 +58,9 @@ function Header() {
         </Route>
         <Route exact path="/themeTravel">
           <ThemeTravel />
+        </Route>
+        <Route exact path="/signUp">
+          <Signup />
         </Route>
       </Switch>
     </BrowserRouter>

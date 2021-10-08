@@ -29,9 +29,6 @@ public class User extends BaseEntity {
     @NotEmpty
     private String password;
 
-    @NotEmpty
-    private String phone_number;
-
     @OneToMany(mappedBy = "user")
     private List<ReviewBoard> reviews = new ArrayList<>();
 

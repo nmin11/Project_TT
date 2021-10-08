@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
 import PopularDestination from './PopularDestination';
 import DestinationReviews from './DestinationReviews';
+import Signup from './Signup';
 import BestPhotos from './BestPhotos';
 import ThemeTravel from './ThemeTravel';
 import Mypage from './Mypage';
@@ -122,9 +123,9 @@ function Header() {
               <button className="nav-btn" onClick={togglePopup}>
                 로그인
               </button>
-            </li>
-            <li>
-              <button className="nav-btn">회원가입</button>
+              <Link className="text-link" to="/signUp">
+                회원가입
+              </Link>
             </li>
           </ul>
         </nav>
@@ -145,9 +146,6 @@ function Header() {
         </Route>
         <Route exact path="/themeTravel">
           <ThemeTravel />
-        </Route>
-        <Route exact path="/myPage">
-          <Mypage />
         </Route>
       </Switch>
     </BrowserRouter>

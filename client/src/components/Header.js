@@ -68,13 +68,6 @@ function Header() {
               <button className="nav-btn" onClick={togglePopup}>
                 로그인
               </button>
-            </li>
-            <li>
-              <button className="nav-btn">회원가입</button>
-            </li>
-            <li>마이 페이지</li>
-            <li>로그인</li>
-            <li>
               <Link className="text-link" to="/signUp">
                 회원가입
               </Link>

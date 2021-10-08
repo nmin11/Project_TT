@@ -5,7 +5,6 @@ import com.hanguseok.server.dto.RegisterDto;
 import com.hanguseok.server.entity.User;
 import com.hanguseok.server.service.TokenService;
 import com.hanguseok.server.service.UserService;
-import com.hanguseok.server.valid.AccountValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

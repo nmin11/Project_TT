@@ -38,6 +38,7 @@ public class UserController {
                 {
                     put("accessToken", accessToken);
                     put("refreshToken", refreshToken);
+                    put("message", null);
                 }
             });
         } catch (Exception e) {
@@ -59,7 +60,7 @@ public class UserController {
                     put("id", user.getId());
                     put("email", user.getEmail());
                     put("nickname", user.getNickname());
-                    put("message", "ok");
+                    put("message", null);
                 }
             });
         } catch (Exception e) {
@@ -72,7 +73,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/form-validation")
+    @GetMapping("/duplication-check")
     public ResponseEntity<?> formValidation(@RequestBody RegisterDto dto) {
         if (userService.existEmail(dto.getEmail())) {
             return ResponseEntity.badRequest().body(new HashMap<>() {

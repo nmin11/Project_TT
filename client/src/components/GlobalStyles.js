@@ -5,6 +5,7 @@ import reset from 'styled-reset';
 const globalStyles = createGlobalStyle`
     ${reset};
 
+
     body {
       width: 1920px;
     }

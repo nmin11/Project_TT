@@ -16,3 +16,6 @@ spring:
 
   config:
     domain: http://projecttt-client-bucket.s3-website.ap-northeast-2.amazonaws.com/
+
+jwt:
+  secret: hanguseokkey

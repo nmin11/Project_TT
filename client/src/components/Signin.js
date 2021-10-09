@@ -28,10 +28,11 @@ function Signin(props) {
       data: userData,
       headers: {
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Origin': 'https://localhost:3000',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Credentials': 'true',
       },
+      withCredentials: true,
     })
       .then((res) => {
         const { accessToken } = res.data;

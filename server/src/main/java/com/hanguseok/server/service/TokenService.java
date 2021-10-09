@@ -39,6 +39,7 @@ public class TokenService {
             return new HashMap<>() {
                 {
                     put("email", email);
+                    put("message", null);
                 }
             };
         } catch (ExpiredJwtException e) {

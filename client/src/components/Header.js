@@ -1,52 +1,23 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
-import PopularDestination from './PopularDestination';
 import DestinationReviews from './DestinationReviews';
 import Signup from './Signup';
-import BestPhotos from './BestPhotos';
 import ThemeTravel from './ThemeTravel';
+import Mypage from './Mypage';
+import Signin from './Signin';
 import '../styles/Header.css';
 
 function Header() {
-  const [showPopup, setShowPopup] = useState(false);
+  const [loginOn, setLoginOn] = useState(true); // 로그인 여부 (test : true로 바꾸고 개발)
+  const [modalOn, setModalOn] = useState(false);
 
-  const togglePopup = () => {
-    if (showPopup === false) {
-      setShowPopup(true);
-    } else {
-      setShowPopup(false);
-    }
+  const loginModalOpen = () => {
+    setModalOn(true);
   };
 
   return (
     <BrowserRouter>
-      <div>
-        {showPopup ? (
-          <div className="popup">
-            <div className="popup_inner">
-              <div id="signin-close-btn">
-                <button className="close" onClick={togglePopup}>
-                  <img src="images/close_btn.png" alt="닫기 버튼" />
-                </button>
-              </div>
-              <div id="signin-contents">
-                <img src="images/projecttt_logo.png" alt="project_tt_logo" />
-                <span id="signin-title">로그인</span>
-                <fieldset>
-                  <input className="signin-input" type="email" id="username" placeholder="이메일"></input>
-                </fieldset>
-                <fieldset>
-                  <input className="signin-input" type="password" id="password" placeholder="비밀번호"></input>
-                </fieldset>
-                <div id="signin-btn">
-                  <button className="signin-btn-contents">로그인</button>
-                  <button className="signin-btn-contents">회원가입</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </div>
+      <Signin showPopup={modalOn} setShowPopup={setModalOn} />
       <header id="header">
         <Link id="logo-link" to="/">
           <img src="/images/projecttt_logo.png" alt="Project_TT LOGO" />
@@ -63,11 +34,19 @@ function Header() {
                 여행지 리뷰
               </Link>
             </li>
-            <li>마이 페이지</li>
+            {loginOn ? (
+              <li>
+                <Link className="text-link" to="/myPage">
+                  마이 페이지
+                </Link>
+              </li>
+            ) : null}
             <li>
-              <button className="nav-btn" onClick={togglePopup}>
+              <button className="text-link" onClick={loginModalOpen}>
                 로그인
               </button>
+            </li>
+            <li>
               <Link className="text-link" to="/signUp">
                 회원가입
               </Link>
@@ -80,19 +59,16 @@ function Header() {
         <Route exact path="/">
           <ThemeTravel />
         </Route>
-        <Route exact path="/popularDestination">
-          <PopularDestination />
-        </Route>
         <Route exact path="/destinationReviews">
           <DestinationReviews />
-        </Route>
-        <Route exact path="/bestPhotos">
-          <BestPhotos />
         </Route>
         <Route exact path="/themeTravel">
           <ThemeTravel />
         </Route>
-        <Route exact path="/signUp">
+        <Route exact path="/myPage">
+          <Mypage />
+        </Route>
+        <Route exact path="/signup">
           <Signup />
         </Route>
       </Switch>

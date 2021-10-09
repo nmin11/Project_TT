@@ -3,15 +3,15 @@ package com.hanguseok.server.config;
 import com.hanguseok.server.service.TokenService;
 import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.logging.Logger;
 
+@Component
 public class JwtInterceptor extends HandlerInterceptorAdapter {
-
-    Logger logger = (Logger) LoggerFactory.getLogger("io.ojw.mall.interceptor.JwtInterceptor");
 
     private static final String TOKEN = "JWT";
 

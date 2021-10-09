@@ -5,6 +5,10 @@ import reset from 'styled-reset';
 const globalStyles = createGlobalStyle`
     ${reset};
 
+
+    body {
+    }
+
     @font-face {
       font-family: 'Noto Sans KR';
       font-style: normal;

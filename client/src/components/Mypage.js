@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import '../styles/Mypage.css';
 import UserReview from './UserReview';
 import { dummyMypageReview } from '../dummy/dummyData';

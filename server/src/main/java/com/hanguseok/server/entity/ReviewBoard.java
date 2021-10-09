@@ -29,7 +29,7 @@ public class ReviewBoard {
     private int recommended;
 
     @NotEmpty
-    private int image;
+    private String image;
 
     @NotEmpty
     private String content;

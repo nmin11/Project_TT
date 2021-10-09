@@ -10,8 +10,8 @@
   top: 0px;
   background-color: white;
   border-bottom: 1px solid rgb(219, 219, 219);
+  z-index: 10;
 }
-
 #logo-link > img {
   margin-top: -2px;
   margin-left: 20px;
@@ -40,8 +40,13 @@ li:hover {
   transition-property: all;
   transition-duration: 0.3s;
   cursor: pointer;
+  all: unset;
 }
 
 .text-link:hover {
   color: teal;
+}
+
+.nav-btn {
+  all: unset;
 }

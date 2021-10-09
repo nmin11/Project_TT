@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
-import PopularDestination from './PopularDestination';
 import DestinationReviews from './DestinationReviews';
-import BestPhotos from './BestPhotos';
+import Signup from './Signup';
 import ThemeTravel from './ThemeTravel';
+import Mypage from './Mypage';
+import Signin from './Signin';
+import Review from './Review';
 import '../styles/Header.css';
 
 function Header() {
+  const [loginOn, setLoginOn] = useState(true); // 로그인 여부 (test : true로 바꾸고 개발)
+  const [modalOn, setModalOn] = useState(false);
+
+  const loginModalOpen = () => {
+    setModalOn(true);
+  };
+
   return (
     <BrowserRouter>
+      <Signin showPopup={modalOn} setShowPopup={setModalOn} />
       <header id="header">
         <Link id="logo-link" to="/">
           <img src="/images/projecttt_logo.png" alt="Project_TT LOGO" />
@@ -16,8 +26,8 @@ function Header() {
         <nav id="nav">
           <ul id="ul">
             <li>
-              <Link className="text-link" to="/popularDestination">
-                인기 여행지
+              <Link className="text-link" to="/themeTravel">
+                테마별 여행
               </Link>
             </li>
             <li>
@@ -25,34 +35,45 @@ function Header() {
                 여행지 리뷰
               </Link>
             </li>
+            {loginOn ? (
+              <li>
+                <Link className="text-link" to="/myPage">
+                  마이 페이지
+                </Link>
+              </li>
+            ) : null}
             <li>
-              <Link className="text-link" to="/bestPhotos">
-                베스트 포토
-              </Link>
+              <button className="text-link" onClick={loginModalOpen}>
+                로그인
+              </button>
             </li>
             <li>
-              <Link className="text-link" to="/themeTravel">
-                테마별 여행
+               <Link className="text-link" to="/signUp">
+                회원가입
               </Link>
             </li>
-            <li>마이 페이지</li>
-            <li>로그인</li>
-            <li>회원가입</li>
           </ul>
         </nav>
       </header>
+
       <Switch>
-        <Route exact path="/popularDestination">
-          <PopularDestination />
+        <Route exact path="/">
+          <ThemeTravel />
         </Route>
         <Route exact path="/destinationReviews">
           <DestinationReviews />
         </Route>
-        <Route exact path="/bestPhotos">
-          <BestPhotos />
-        </Route>
         <Route exact path="/themeTravel">
           <ThemeTravel />
+        </Route>
+        <Route exact path="/myPage">
+          <Mypage />
+        </Route>
+        <Route exact path="/signup">
+          <Signup />
+        </Route>
+        <Route exact path="/review">
+          <Review />
         </Route>
       </Switch>
     </BrowserRouter>

@@ -35,6 +35,7 @@ public class UserController {
 
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
+                    put("id", user.getId());
                     put("accessToken", accessToken);
                     put("refreshToken", refreshToken);
                     put("message", null);

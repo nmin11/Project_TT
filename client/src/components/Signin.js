@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Signin.css';
 
@@ -9,6 +9,8 @@ function Signin(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userLoginError, setUserLoginError] = useState('');
+
+  const history = useHistory();
 
   const onLogin = async () => {
     const userData = {
@@ -38,7 +40,14 @@ function Signin(props) {
         const { accessToken } = res.data;
         // API 요청하는 콜마다 헤더에 accessToken 담아 보내도록 설정
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-        console.log(res);
+        console.log(res.data.accessToken);
+
+        // useHistory를 사용하여 로그인 성공시 모달창을 끄고 mypage로 이동
+        props.setShowPopup(false);
+        setUserEmail('');
+        setUserPassword('');
+        setUserLoginError('');
+        history.push('/mypage');
       })
       .catch((err) => {
         console.error(err);

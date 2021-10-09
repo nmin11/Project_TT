@@ -5,6 +5,7 @@ import Signup from './Signup';
 import ThemeTravel from './ThemeTravel';
 import Mypage from './Mypage';
 import Signin from './Signin';
+import Review from './Review';
 import '../styles/Header.css';
 
 function Header() {
@@ -70,6 +71,9 @@ function Header() {
         </Route>
         <Route exact path="/signup">
           <Signup />
+        </Route>
+        <Route exact path="/review">
+          <Review />
         </Route>
       </Switch>
     </BrowserRouter>

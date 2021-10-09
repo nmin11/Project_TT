@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import '../styles/Mypage.css';
 import UserReview from './UserReview';
 import { dummyMypageReview } from '../dummy/dummyData';
@@ -35,14 +35,12 @@ function Mypage() {
             </ul>
           </div>
         </div>
-      </div>
-      <div id="review-contents">
+        <div id="btn-contents">
+          <button className="info-btn">정보 수정</button>
+          <button className="info-btn">회원 탈퇴</button>
+        </div>
         <span className="info-title">내가 쓴 리뷰</span>
         {UserReviewList}
-      </div>
-      <div id="btn-contents">
-        <button className="info-btn">정보 수정</button>
-        <button className="info-btn">회원 탈퇴</button>
       </div>
     </div>
   );

@@ -47,11 +47,7 @@ function Header() {
               </button>
             </li>
             <li>
-<<<<<<< Updated upstream
-              <Link className="text-link" to="/signUp">
-=======
                <Link className="text-link" to="/signUp">
->>>>>>> Stashed changes
                 회원가입
               </Link>
             </li>

@@ -1,0 +1,55 @@
+.user-review-content {
+  width: 80%;
+  display: flex;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgb(219, 219, 219);
+}
+
+.user-review-content > img {
+  width: 130px;
+  margin-left: 10px;
+  border-radius: 10px;
+}
+
+.user-review-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 7px;
+}
+
+.user-review-description {
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+
+.user-review-count {
+  font-size: 12px;
+  margin-bottom: 5px;
+  color: rgb(59, 59, 59);
+}
+
+.user-review-likes {
+  display: flex;
+  align-items: center;
+}
+
+.user-review-likes > img {
+  width: 20px;
+}
+
+.user-review-likes-count {
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.user-review-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.user-review-likes {
+  width: 20px;
+}

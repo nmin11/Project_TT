@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
-const headers = { withCredentials: true };
 
 function Signup() {
   const [userinfo, setuserinfo] = useState({
@@ -57,10 +56,11 @@ function Signup() {
           },
       headers: {
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Origin': 'https://localhost:3000',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Credentials': 'true',
       },
+      withCredentials: true,
     })
   }
 

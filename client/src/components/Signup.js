@@ -11,11 +11,20 @@ function Signup() {
         nickname: '',
         birthday: Date.now()
       });
+    const [errorMessage, setErrorMessage] = useState('');
     const handleInputValue = (key) => (e) => {
         setuserinfo({ ...userinfo, [key]: e.target.value });
       };  
 
+    // 회원가입 POST 요청  
     async function transfortForm(){
+        //모든필드의 값이 null이 아니어야 함.
+        if(userinfo.email === '' || userinfo.password === '' || userinfo.username === '' ||  userinfo.nickname === ''
+         || userinfo.birthday === ''){
+            setErrorMessage('모든 내용을 작성해 주세요');
+            return null
+         }
+         setErrorMessage('');
         console.log({
             "email" :  userinfo.email,
             "password" : userinfo.password,
@@ -23,11 +32,26 @@ function Signup() {
             "nickname" : userinfo.nickname,
             "birthday" : userinfo.birthday
         })
+
         const response = await axios.post('http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/signup', {
             "email" :  userinfo.email,
             "password" : userinfo.password,
             "nickname" : userinfo.username
         })
+    }
+
+    const checkingPassword = (e) => {
+        console.log(e.target.value)
+        if(userinfo.password !== e.target.value){
+            setErrorMessage('비밀번호가 일치하지 않습니다')
+        }
+        else {
+            setErrorMessage('')
+        }
+    }
+    //POST요청으로 중복 아이디 찾기
+    const idValidationCheck = (e) => {
+        console.log('이벤트 발생');
     }
     return (
         <div id="container">
@@ -39,17 +63,19 @@ function Signup() {
                     <span class="input_box">
                         <input type="text" id="email" class="int" onChange={handleInputValue('email')}></input>
                     </span>
+                    {<div>사용 가능한 아이디입니다.</div>}
                     <h3>
-                      <label for="password">비밀번호</label>
+                      <label for="password" >비밀번호</label>
                     </h3>
                     <span class="input_box">
-                        <input type="text" id="password" class="int" onChange={handleInputValue('password')}></input>
+                        <input type="text" id="password" class="int" type="password" onBlur={idValidationCheck} onChange={handleInputValue('password')}></input>
                     </span>
                     <h3>
                       <label for="password_check">비밀번호 재확인</label>
                     </h3>
+                    
                     <span class="input_box">
-                        <input type="text" id="password_check" class="int" ></input>
+                        <input type="text" id="password_check" type="password" class="int" onChange={checkingPassword} ></input>
                     </span>
                 </div>
                 <div class="row_group">
@@ -72,6 +98,7 @@ function Signup() {
                 </div>
             </div>
             <button onClick={transfortForm}>회원 가입</button>
+            {errorMessage === '' ? null : <div className='alert-box'>{errorMessage}</div>}
         </div>
         
     );

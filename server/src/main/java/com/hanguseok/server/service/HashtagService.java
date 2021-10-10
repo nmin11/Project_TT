@@ -28,4 +28,9 @@ public class HashtagService {
         hashtagRepository.save(hashtag);
         return hashtag;
     }
+
+    public Hashtag findHashtagByName(String name) {
+        return hashtagRepository.findByName(name).get();
+    }
+
 }

@@ -5,10 +5,7 @@ import com.hanguseok.server.entity.BoardHash;
 import com.hanguseok.server.entity.Hashtag;
 import com.hanguseok.server.entity.ReviewBoard;
 import com.hanguseok.server.entity.User;
-import com.hanguseok.server.service.HashtagService;
-import com.hanguseok.server.service.ReviewBoardService;
-import com.hanguseok.server.service.S3Uploader;
-import com.hanguseok.server.service.UserService;
+import com.hanguseok.server.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +28,7 @@ public class ReviewBoardController {
     private final S3Uploader s3Uploader;
     private final HashtagService hashtagService;
     private final UserService userService;
+    private final BoardHashService boardHashService;
 
     @GetMapping
     public ResponseEntity<?> allReview() {
@@ -101,28 +99,44 @@ public class ReviewBoardController {
     }
 
     @PostMapping
-    public ResponseEntity<?> reviewUpload(@RequestBody ReviewDto dto) throws IOException {
+    public ResponseEntity<?> uploadReview(@RequestParam("data") MultipartFile multipartFile, @RequestBody ReviewDto dto) throws IOException {
         try {
             List<Hashtag> hashtags = new ArrayList<>();
-
             for (String el : dto.getHashtags()) {
+                Hashtag hashtag;
                 if (!hashtagService.alreadyExist(el)) {
-                    hashtags.add(hashtagService.saveHashtag(el));
-                };
+                    hashtag = hashtagService.saveHashtag(el);
+                } else {
+                    hashtag = hashtagService.findHashtagByName(el);
+                }
+                hashtags.add(hashtag);
             }
-
-            System.out.println("--- 해시태그 저장 확인 ---");
+            log.info("--- 해시태그 저장 확인 ---");
 
             User user = userService.findUserById(dto.getUserId());
+            log.info("--- 유저 조회 확인 ---");
 
-            System.out.println("--- 유저 조회 확인 ---");
+            ReviewBoard review = reviewBoardService.initReview(user, dto);
 
-//            String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
-//            review.builder()
-//                    .image(uploadUrl)
-//                    .build();
+            for (Hashtag hashtag : hashtags) {
+                BoardHash boardHash = BoardHash.builder()
+                        .hashtag(hashtag)
+                        .review(review)
+                        .build();
 
-            ReviewBoard review = reviewBoardService.saveReview(user, hashtags, dto);
+                boardHashService.connectTag(boardHash);
+            }
+
+            String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
+            review.builder()
+                    .title(review.getTitle())
+                    .content(review.getContent())
+                    .region(review.getRegion())
+                    .view(0)
+                    .recommended(0)
+                    .image(uploadUrl)
+                    .build();
+            reviewBoardService.saveReview(review);
 
             return ResponseEntity.ok().body(new HashMap<>() {
                 {

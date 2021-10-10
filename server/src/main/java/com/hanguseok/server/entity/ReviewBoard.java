@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import static javax.persistence.FetchType.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class ReviewBoard {
+public class ReviewBoard extends BaseEntity implements Serializable {
 
     @Id @GeneratedValue
     @Column(name = "review_id")
@@ -28,7 +29,6 @@ public class ReviewBoard {
 
     private int recommended;
 
-    @NotEmpty
     private String image;
 
     @NotEmpty
@@ -41,7 +41,7 @@ public class ReviewBoard {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "review")

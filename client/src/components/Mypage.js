@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Mypage.css';
 import UserReview from './UserReview';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { dummyMypageReview } from '../dummy/dummyData';
 
 function Mypage(props) {

@@ -9,6 +9,7 @@ import ThemeTravel from './components/ThemeTravel';
 import Mypage from './components/Mypage';
 import Review from './components/Review';
 import ModifyProfile from './components/ModifyProfile';
+import Signin from './components/Signin';
 
 function App() {
   const [loginOn, setLoginOn] = useState(false); // 로그인 여부 (test : true로 바꾸고 개발)
@@ -18,7 +19,8 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <GlobalStyles /> {/* CSS 전역 설정 */}
-        <Header modalOn={modalOn} setModalOn={setModalOn} loginOn={loginOn} setLoginOn={setLoginOn} />{' '}
+        <Signin modalOn={modalOn} setModalOn={setModalOn} setLoginOn={setLoginOn} />
+        <Header modalOn={modalOn} setModalOn={setModalOn} loginOn={loginOn} setLoginOn={setLoginOn} />
         {/* 헤더(로고, 네비게이션) */}
         <Switch>
           <Route exact path="/">
@@ -45,6 +47,7 @@ function App() {
         </Switch>
         <Footer /> {/* 푸터 */}
       </div>
+      {/*회원 가입 모달 */}
     </BrowserRouter>
   );
 }

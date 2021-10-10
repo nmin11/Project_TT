@@ -1,18 +1,21 @@
 import React from "react";
+import { useLocation } from "react-router";
 import "../styles/Review.css"
 
 function Review() {
+    const {state} = useLocation();
   return (
     <div>
       <div class="review_header">
-        <div class="review_title">게시글 제목</div>
+        <div class="review_title">{state.title}</div>
         <div>
-          <span class="reviewer">글쓴이 닉네임</span>
-          <span class="writing_time"> 글작성일</span>
+          <span class="reviewer">글쓴이</span>
+          <span class="writing_time">작성시간</span>
         </div>
       </div>
+      <div><img src={state.src}></img></div>
       <div>
-          글내용
+      {state.description}
       </div>
     </div>
   );

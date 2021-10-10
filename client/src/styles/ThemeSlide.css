@@ -1,0 +1,27 @@
+#theme-title {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+#theme-title > span {
+  font-family: 'NanumSquare';
+  font-size: 27px;
+  font-weight: 700;
+}
+
+#theme-travel-content {
+  margin: 0 auto;
+  padding: 0px 40px 40px 40px;
+  width: 80%;
+}
+
+.theme-slide-img {
+  margin: 5px;
+  position: relative;
+  width: 90%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 3px rgba(173, 173, 173, 0.9);
+}

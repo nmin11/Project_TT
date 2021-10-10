@@ -1,26 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useHistory, withRouter } from 'react-router-dom';
 import '../styles/Header.css';
 import Signin from './Signin';
 
-function Header() {
-  const [loginOn, setLoginOn] = useState(false); // 로그인 여부 (test : true로 바꾸고 개발)
-  const [modalOn, setModalOn] = useState(false);
-
+function Header(props) {
   let history = useHistory();
 
   const loginModalOpen = () => {
-    setModalOn(true);
+    props.setModalOn(true);
   };
 
   const handleSignOut = () => {
     history.push('/');
-    setLoginOn(false);
+
+    props.setLoginOn(false);
   };
 
   return (
     <div>
-      <Signin showPopup={modalOn} setShowPopup={setModalOn} setLoginOn={setLoginOn} />
+      <Signin showPopup={props.modalOn} setShowPopup={props.setModalOn} setLoginOn={props.setLoginOn} />
       <header id="header">
         <Link id="logo-link" to="/">
           <img src="/images/projecttt_logo.png" alt="Project_TT LOGO" />
@@ -37,14 +35,14 @@ function Header() {
                 여행지 리뷰
               </Link>
             </li>
-            {loginOn ? (
+            {props.loginOn ? (
               <li>
                 <Link className="text-link" to="/myPage">
                   마이 페이지
                 </Link>
               </li>
             ) : null}
-            {loginOn ? (
+            {props.loginOn ? (
               <li>
                 <button className="text-link" onClick={handleSignOut}>
                   로그아웃

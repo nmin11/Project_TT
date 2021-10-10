@@ -70,7 +70,7 @@ public class ReviewBoardService {
         return reviewBoardRepository.findById(id).get();
     }
 
-    public ReviewBoard saveReview(User user, List<Hashtag> hashtags, ReviewDto dto) {
+    public ReviewBoard initReview(User user, ReviewDto dto) {
         try {
             System.out.println("--- 리뷰 서비스 연결 확인 ---");
             ReviewBoard review = ReviewBoard.builder()
@@ -82,11 +82,14 @@ public class ReviewBoardService {
                     .recommended(0)
                     .build();
             System.out.println("--- 리뷰 저장 직전 확인 ---");
-            reviewBoardRepository.save(review);
             return review;
         } catch (Exception e) {
             log.error("Review post error : " + e);
             return null;
         }
+    }
+
+    public void saveReview(ReviewBoard review) {
+        reviewBoardRepository.save(review);
     }
 }

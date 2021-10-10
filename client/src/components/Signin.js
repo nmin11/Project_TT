@@ -65,7 +65,7 @@ function Signin(props) {
           });
 
         // useHistory를 사용하여 로그인 성공시 모달창을 끄고 mypage로 이동
-        props.setShowPopup(false);
+        props.setModalOn(false);
         setUserEmail('');
         setUserPassword('');
         setUserLoginError('');
@@ -89,10 +89,10 @@ function Signin(props) {
   };
 
   const togglePopup = () => {
-    if (props.showPopup === false) {
-      props.setShowPopup(true);
+    if (props.modalOn === false) {
+      props.setModalOn(true);
     } else {
-      props.setShowPopup(false);
+      props.setModalOn(false);
       setUserEmail('');
       setUserPassword('');
       setUserLoginError('');
@@ -113,7 +113,7 @@ function Signin(props) {
 
   // 모달 창 끄고 회원가입으로 이동
   const moveSignup = () => {
-    props.setShowPopup(false);
+    props.setModalOn(false);
     setUserEmail('');
     setUserPassword('');
     setUserLoginError('');
@@ -121,7 +121,7 @@ function Signin(props) {
 
   return (
     <div>
-      {props.showPopup ? (
+      {props.modalOn ? (
         <div className="popup">
           <div className="popup_inner">
             <div id="signin-close-btn">

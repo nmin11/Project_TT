@@ -12,8 +12,10 @@ import com.hanguseok.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,43 +26,11 @@ import java.util.List;
 public class ReviewBoardService {
 
     private final ReviewBoardRepository reviewBoardRepository;
-    private final UserRepository userRepository;
-    private final HashtagRepository hashtagRepository;
-    private final BoardHashRepository boardHashRepository;
+    private final S3Uploader s3Uploader;
 
     public List<ReviewBoard> findAllReviews() {
         return reviewBoardRepository.findAll();
     }
-
-    /*
-    public ReviewBoard postReview(ReviewDto dto) {
-        List<Hashtag> hashtags = new ArrayList<>();
-        for (String el : dto.getHashtags()) {
-            Hashtag hashtag = Hashtag.builder()
-                    .name(el)
-                    .build();
-            hashtagRepository.save(hashtag);
-            hashtags.add(hashtag);
-        }
-        ReviewBoard review = ReviewBoard.builder()
-                .title(dto.getTitle())
-                .view(0)
-                .recommended(0)
-                .content(dto.getContent())
-                .region(dto.getRegion())
-                .user(userRepository.findById(dto.getUserId()).get())
-                .build();
-        reviewBoardRepository.save(review);
-        for (Hashtag hashtag : hashtags) {
-            BoardHash boardHash = BoardHash.builder()
-                    .review(review)
-                    .hashtag(hashtag)
-                    .build();
-            boardHashRepository.save(boardHash);
-        }
-        return review;
-    }
-     */
 
     public void deletePost(Long id) {
         reviewBoardRepository.deleteById(id);
@@ -79,7 +49,6 @@ public class ReviewBoardService {
                     .content(dto.getContent())
                     .region(dto.getRegion())
                     .view(0)
-                    .recommended(0)
                     .build();
             System.out.println("--- 리뷰 저장 직전 확인 ---");
             return review;
@@ -92,4 +61,22 @@ public class ReviewBoardService {
     public void saveReview(ReviewBoard review) {
         reviewBoardRepository.save(review);
     }
+
+    public ReviewBoard editReview(Long id, ReviewDto dto, MultipartFile multipartFile) throws IOException {
+        ReviewBoard review = reviewBoardRepository.findById(id).get();
+        String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
+        ReviewBoard updatedReview = ReviewBoard.builder()
+                .id(review.getId())
+                .title(dto.getTitle())
+                .view(review.getView())
+                .content(dto.getContent())
+                .image(uploadUrl)
+                .comments(review.getComments())
+                .region(dto.getRegion())
+                .build();
+
+        reviewBoardRepository.save(updatedReview);
+        return updatedReview;
+    }
+
 }

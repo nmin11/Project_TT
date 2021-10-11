@@ -27,8 +27,6 @@ public class ReviewBoard extends BaseEntity implements Serializable {
 
     private int view;
 
-    private int recommended;
-
     private String image;
 
     @NotEmpty
@@ -41,10 +39,13 @@ public class ReviewBoard extends BaseEntity implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<BoardHash> hashtags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    private List<Recommend> recommends = new ArrayList<>();
 
 }

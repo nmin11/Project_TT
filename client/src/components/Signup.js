@@ -17,7 +17,7 @@ function Signup() {
     setuserinfo({ ...userinfo, [key]: e.target.value });
   };
 
-  // 회원가입 POST 요청
+  // 회원가입
   async function transfortForm() {
     //모든필드의 값이 null이 아니어야 함.
     if (
@@ -31,37 +31,51 @@ function Signup() {
       return null;
     }
     setErrorMessage("");
-    console.log({
-      email: userinfo.email,
-      password: userinfo.password,
-      username: userinfo.username,
-      nickname: userinfo.nickname,
-      birthday: userinfo.birthday,
+
+    //중복체크 GET 요청
+    await axios(
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/duplication-check",
+      {
+        method: "GET",
+        data: {
+          email: userinfo.email,
+          password: userinfo.password,
+          nickname: userinfo.username,
+        },
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        withCredentials: true,
+      }
+    ).catch((e) => {
+        if(e.response){
+            //setErrorMessage(e.response.data);
+            console.log(e.response)
+        }
     });
 
-    // const response = await axios.post(
-    //   "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/signup",
-    //   {
-    //     email: userinfo.email,
-    //     password: userinfo.password,
-    //     nickname: userinfo.username,
-    //   }
-    // );
-    await axios('http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/signup', {
-      method: 'POST',
-      data: {
-            email: userinfo.email,
-            password: userinfo.password,
-            nickname: userinfo.username,
-          },
-      headers: {
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-      withCredentials: true,
-    })
+    //회원가입 POST
+    await axios(
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/signup",
+      {
+        method: "POST",
+        data: {
+          email: userinfo.email,
+          password: userinfo.password,
+          nickname: userinfo.username,
+        },
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        withCredentials: true,
+      }
+    );
   }
 
   const checkingPassword = (e) => {
@@ -101,7 +115,7 @@ function Signup() {
               id="password"
               class="int"
               type="password"
-              onBlur={idValidationCheck}
+              //  onBlur={idValidationCheck} //
               onChange={handleInputValue("password")}
             ></input>
           </span>

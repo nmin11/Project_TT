@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/ModifyProfile.css';
+import { API_URL } from '../config/constants';
 
-function ModifyProfile() {
+function ModifyProfile(props) {
   const history = useHistory();
 
-  const moveMypage = () => {
-    history.push('/mypage');
+  const [changeNickname, setChangeNickname] = useState(props.userInfo.nickname);
+
+  const modifyInfo = async () => {
+    await axios(`${API_URL}/profile/${props.userInfo.id}`, {
+      method: 'PUT',
+      data: { nickname: changeNickname },
+      headers: {
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'PUT',
+        'Access-Control-Allow-Credentials': 'true',
+      },
+      withCredentials: true,
+    })
+      .then((res) => {
+        console.log(res.data);
+        props.setUserInfo(res.data);
+        history.push('/mypage');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const modifyNickname = (e) => {
+    setChangeNickname(e.target.value);
+    console.log(changeNickname);
   };
 
   return (
@@ -15,7 +42,7 @@ function ModifyProfile() {
         <div id="profile-photo">
           <span className="info-title">정보 수정</span>
           <img src="images/avatar.png" alt="프로필 사진" />
-          <input id="profile-modify-name" value="김코딩"></input>
+          <input id="profile-modify-name" defaultValue={props.userInfo.nickname} onChange={modifyNickname}></input>
         </div>
         <div id="profile-info">
           <div id="profile-wrapper">
@@ -30,7 +57,7 @@ function ModifyProfile() {
           </div>
         </div>
         <div id="btn-contents">
-          <button className="info-btn" onClick={moveMypage}>
+          <button className="info-btn" onClick={modifyInfo}>
             정보 수정
           </button>
         </div>

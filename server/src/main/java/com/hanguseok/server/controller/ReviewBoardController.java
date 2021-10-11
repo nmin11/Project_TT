@@ -1,5 +1,6 @@
 package com.hanguseok.server.controller;
 
+import com.hanguseok.server.dto.RecommendDto;
 import com.hanguseok.server.dto.ReviewDto;
 import com.hanguseok.server.entity.BoardHash;
 import com.hanguseok.server.entity.Hashtag;
@@ -29,6 +30,7 @@ public class ReviewBoardController {
     private final HashtagService hashtagService;
     private final UserService userService;
     private final BoardHashService boardHashService;
+    private final RecommendService recommendService;
 
     @GetMapping
     public ResponseEntity<?> allReview() {
@@ -41,7 +43,7 @@ public class ReviewBoardController {
                             {
                                 put("title", review.getTitle());
                                 put("view", review.getView());
-                                put("recommend", review.getRecommended());
+                                put("recommend", review.getRecommends().size());
                                 put("image", review.getImage());
                                 put("content", review.getContent());
                                 put("region", review.getRegion());
@@ -84,7 +86,7 @@ public class ReviewBoardController {
                     put("hashtags", hashtags);
                     put("author", review.getUser().getNickname());
                     put("view", review.getView());
-                    put("recommend", review.getRecommended());
+                    put("recommend", review.getRecommends().size());
                     put("region", review.getRegion());
                     put("message", "리뷰 게시글 조회에 성공했습니다.");
                 }
@@ -111,10 +113,8 @@ public class ReviewBoardController {
                 }
                 hashtags.add(hashtag);
             }
-            log.info("--- 해시태그 저장 확인 ---");
 
             User user = userService.findUserById(dto.getUserId());
-            log.info("--- 유저 조회 확인 ---");
 
             ReviewBoard review = reviewBoardService.initReview(user, dto);
 
@@ -133,7 +133,6 @@ public class ReviewBoardController {
                     .content(review.getContent())
                     .region(review.getRegion())
                     .view(0)
-                    .recommended(0)
                     .image(uploadUrl)
                     .build();
             reviewBoardService.saveReview(review);
@@ -175,14 +174,16 @@ public class ReviewBoardController {
         }
     }
 
-    /*
     @PutMapping("/{id}")
-    public ResponseEntity<?> editReview(@PathVariable("id") Long id, ReviewDto dto) {
+    public ResponseEntity<?> editReview(@RequestParam("data") MultipartFile multipartFile, @PathVariable("id") Long id, ReviewDto dto) {
         try {
-            ReviewBoard review = reviewBoardService.postReview(dto);
+            ReviewBoard review = reviewBoardService.editReview(id, dto, multipartFile);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());
+                    put("title", review.getTitle());
+                    put("content", review.getContent());
+                    put("image", review.getImage());
                     put("message", "성공적으로 수정되었습니다.");
                 }
             });
@@ -194,6 +195,41 @@ public class ReviewBoardController {
             });
         }
     }
-     */
+
+    @PostMapping("/recommend")
+    public ResponseEntity<?> reviewRecommend(@RequestBody RecommendDto dto) {
+        try {
+            User user = userService.findUserById(dto.getUserId());
+            ReviewBoard review = reviewBoardService.findReviewById(dto.getReviewId());
+            int len;
+            if (recommendService.alreadyRecommend(user)) {
+                recommendService.deleteRecommend(user, review);
+                len = recommendService.findByReview(review).size();
+
+                return ResponseEntity.ok().body(new HashMap<>() {
+                    {
+                        put("message", "이미 추천했습니다.");
+                        put("추천 수", len);
+                    }
+                });
+            } else {
+                recommendService.createRecommend(user, review);
+                len = recommendService.findByReview(review).size();
+
+                return ResponseEntity.ok().body(new HashMap<>() {
+                    {
+                        put("message", "게시글을 추천했습니다.");
+                        put("추천 수", len);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new HashMap<>() {
+                {
+                    put("message", "게시글 추천에 실패했습니다!");
+                }
+            });
+        }
+    }
 
 }

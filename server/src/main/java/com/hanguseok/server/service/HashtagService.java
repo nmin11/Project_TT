@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,10 @@ public class HashtagService {
 
     public Hashtag findHashtagByName(String name) {
         return hashtagRepository.findByName(name).get();
+    }
+
+    public List<Hashtag> findAllHashtag() {
+        return hashtagRepository.findAll();
     }
 
 }

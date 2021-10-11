@@ -5,11 +5,14 @@ import com.hanguseok.server.dto.RegisterDto;
 import com.hanguseok.server.entity.User;
 import com.hanguseok.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
@@ -51,4 +54,30 @@ public class UserService {
         }
     }
 
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId).get();
+    }
+
+    public boolean passwordCheck(User user, String password) {
+        if (user.getPassword().equals(password)) return true;
+        else return false;
+    }
+
+    public User editProfile(Long id, String nickname) {
+        User userRepo = userRepository.findById(id).get();
+        User user = User.builder()
+                .id(id)
+                .nickname(nickname)
+                .password(userRepo.getPassword())
+                .email(userRepo.getEmail())
+                .comments(userRepo.getComments())
+                .reviews(userRepo.getReviews())
+                .build();
+        userRepository.save(user);
+        return user;
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }

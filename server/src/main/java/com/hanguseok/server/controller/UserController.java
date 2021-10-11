@@ -45,7 +45,7 @@ public class UserController {
                     }
                 });
             } else {
-                return ResponseEntity.ok().body(new HashMap<>() {
+                return ResponseEntity.badRequest().body(new HashMap<>() {
                     {
                         put("message", "비밀번호가 틀렸습니다!");
                     }
@@ -179,6 +179,7 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
+                    put("data", null);
                     put("message", checkResult.get("message"));
                 }
             });

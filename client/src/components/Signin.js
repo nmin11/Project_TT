@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/Signin.css';
@@ -10,7 +10,7 @@ function Signin(props) {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [userLoginError, setUserLoginError] = useState('');
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({});
 
   const history = useHistory();
 
@@ -47,7 +47,7 @@ function Signin(props) {
 
         // 윗 줄에 기본 헤더로 `Bearer ${accessToken}`를 넣었기 때문에
         // 해당 accesstoken이 유효하면 GET 요청으로 로그인 회원 정보를 받아옴
-        axios(`${API_URL}/auth`, {
+        axios(`${API_URL}/token-valid-check`, {
           method: 'GET',
           headers: {
             'Access-Control-Allow-Headers': 'Content-Type',
@@ -58,19 +58,23 @@ function Signin(props) {
           withCredentials: true,
         })
           .then((res) => {
-            setUserInfo(res.data);
+            // id, pw가 맞고 토큰이 유효하면 받아온 데이터를 userInfo에 저장
+
+            props.setUserInfo(res.data);
+            setUserInfo(props.userInfo);
+            console.log(userInfo);
+
+            // useHistory를 사용하여 로그인 성공시 모달창을 끄고 mypage로 이동
+            props.setModalOn(false);
+            setUserEmail('');
+            setUserPassword('');
+            setUserLoginError('');
+            history.push('/mypage');
+            props.setLoginOn(true);
           })
           .catch((err) => {
             console.error(err);
           });
-
-        // useHistory를 사용하여 로그인 성공시 모달창을 끄고 mypage로 이동
-        props.setModalOn(false);
-        setUserEmail('');
-        setUserPassword('');
-        setUserLoginError('');
-        history.push('/mypage');
-        props.setLoginOn(true);
       })
       .catch((err) => {
         console.error(err);

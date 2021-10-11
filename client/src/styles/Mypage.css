@@ -6,6 +6,8 @@
 #profile-contents {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #profile-photo {
@@ -41,6 +43,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 #profile-wrapper > ul {
@@ -60,14 +63,13 @@
   margin-bottom: 10px;
 }
 
-#review-contents {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  height: 500px;
-}
-
 #btn-contents {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.info-btn {
+  margin-top: -10px;
+  margin-bottom: 40px;
 }

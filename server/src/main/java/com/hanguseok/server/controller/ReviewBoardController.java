@@ -190,7 +190,7 @@ public class ReviewBoardController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
-                    put("message", "수정 작업에 실패했습니다");
+                    put("message", "수정 작업에 실패했습니다.");
                 }
             });
         }

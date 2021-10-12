@@ -16,7 +16,7 @@ function DestinationReviews() {
         </video>
         <span id="dest-top-text">{`여행지 리뷰`}</span>
       </div>
-
+      <div className="reviews-block">
       {dummyMypageReview.map((ele) => (
         <div className="board-block">
           <Link
@@ -43,6 +43,7 @@ function DestinationReviews() {
           </Link>
         </div>
       ))}
+      </div>
 
       <button id="post-btn" onClick={pushToPost}>
         글쓰기

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 function NewReview() {
   const [fileInfo, setFileInfo] = useState("");
   const [reviewData, setReviewData] = useState({
@@ -21,18 +23,17 @@ function NewReview() {
     fd.append('image', fileInfo, fileInfo.name)
     console.log(fd.getAll('image'))
     await axios(
-      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review",
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review" + fd,
       {
         method: "POST",
         data: {
-          data: fd,
           userId : 'test',
           usertitle : 'test11',
           content : 'tt',
           region : 'tt',
           hashtags : 'tt'
         },
-        headers: {
+        headers: {  
           "Content-Type": "multipart/form-data",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Origin": "*",

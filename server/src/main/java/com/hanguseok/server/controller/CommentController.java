@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-@RestController("/comment")
+@RestController
+@RequestMapping("/comment")
 @CrossOrigin(origins = "http://projecttt-client-bucket.s3-website.ap-northeast-2.amazonaws.com", allowedHeaders = "*", allowCredentials = "true")
 @RequiredArgsConstructor
 public class CommentController {
@@ -37,7 +38,6 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-
     public ResponseEntity<?> editComment(@PathVariable("id") Long id, @RequestBody CommentDto dto) {
         try {
             Comment comment = commentService.editComment(id, dto.getContent());

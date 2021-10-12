@@ -36,7 +36,7 @@ function App() {
             <ThemeTravel />
           </Route>
           <Route exact path="/destinationReviews">
-            <DestinationReviews />
+            <DestinationReviews setLoginOn={setLoginOn} loginOn={loginOn} userInfo={userInfo}/>
           </Route>
           <Route exact path="/themeTravel">
             <ThemeTravel />

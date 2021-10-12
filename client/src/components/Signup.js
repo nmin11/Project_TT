@@ -9,9 +9,7 @@ function Signup() {
   const [userinfo, setuserinfo] = useState({
     email: "",
     password: "",
-    username: "",
     nickname: "",
-    birthday: "",
   });
   const [emailValidation, setEmailValidation] = useState("");
   const [nicknameValidation, setNicknameValidation] = useState("");

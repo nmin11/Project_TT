@@ -189,7 +189,7 @@ public class UserController {
     @PutMapping("/profile/{id}")
     public ResponseEntity<?> editProfile(@PathVariable("id") Long id, @RequestBody EditProfileDto dto) {
         try {
-            User user = userService.editProfile(id, dto.getNickname());
+            User user = userService.editProfile(id, dto);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("message", "유저 정보가 수정되었습니다.");

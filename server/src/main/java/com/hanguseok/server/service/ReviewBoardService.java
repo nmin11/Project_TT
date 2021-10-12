@@ -1,21 +1,15 @@
 package com.hanguseok.server.service;
 
 import com.hanguseok.server.dto.ReviewDto;
-import com.hanguseok.server.entity.BoardHash;
-import com.hanguseok.server.entity.Hashtag;
-import com.hanguseok.server.entity.ReviewBoard;
-import com.hanguseok.server.entity.User;
+import com.hanguseok.server.entity.*;
 import com.hanguseok.server.repository.BoardHashRepository;
 import com.hanguseok.server.repository.HashtagRepository;
 import com.hanguseok.server.repository.ReviewBoardRepository;
-import com.hanguseok.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +20,11 @@ import java.util.List;
 public class ReviewBoardService {
 
     private final ReviewBoardRepository reviewBoardRepository;
-    private final S3Uploader s3Uploader;
     private final HashtagService hashtagService;
     private final BoardHashService boardHashService;
+    private final HashtagRepository hashtagRepository;
+    private final BoardHashRepository boardHashRepository;
+    private final UserService userService;
 
     public List<ReviewBoard> findAllReviews() {
         return reviewBoardRepository.findAll();
@@ -36,6 +32,7 @@ public class ReviewBoardService {
 
     public void deletePost(Long id) {
         reviewBoardRepository.deleteById(id);
+        hashtagService.deleteNonExistReview();
     }
 
     public ReviewBoard findReviewById(Long id) {
@@ -44,7 +41,6 @@ public class ReviewBoardService {
 
     public ReviewBoard initReview(User user, ReviewDto dto) {
         try {
-            System.out.println("--- 리뷰 서비스 연결 확인 ---");
             ReviewBoard review = ReviewBoard.builder()
                     .user(user)
                     .title(dto.getTitle())
@@ -53,7 +49,6 @@ public class ReviewBoardService {
                     .view(0)
                     .image(dto.getImage())
                     .build();
-            System.out.println("--- 리뷰 저장 직전 확인 ---");
             reviewBoardRepository.save(review);
             return review;
         } catch (Exception e) {
@@ -63,8 +58,6 @@ public class ReviewBoardService {
     }
 
     public ReviewBoard editReview(Long id, ReviewDto dto) {
-        ReviewBoard review = reviewBoardRepository.findById(id).get();
-
         List<Hashtag> hashtags = new ArrayList<>();
         for (String el : dto.getHashtags()) {
             Hashtag hashtag;
@@ -76,27 +69,53 @@ public class ReviewBoardService {
             hashtags.add(hashtag);
         }
 
+        ReviewBoard review = reviewBoardRepository.findById(id).get();
+        List<BoardHash> boardHashes = review.getHashtags();
+        List<String> hashes = dto.getHashtags();
+        boolean isExist;
+        for (BoardHash boardHash : boardHashes) {
+            isExist = false;
+            for (String hash : hashes) {
+                if (hash.equals(boardHash.getHashtag().getName())) {
+                    isExist = true;
+                }
+            }
+            if (!isExist) boardHashRepository.delete(boardHash);
+        }
+
         ReviewBoard updatedReview = ReviewBoard.builder()
                 .id(review.getId())
                 .user(review.getUser())
+                .comments(review.getComments())
                 .title(dto.getTitle())
-                .view(review.getView())
                 .content(dto.getContent())
                 .image(dto.getImage())
-                .comments(review.getComments())
                 .region(dto.getRegion())
+                .view(review.getView())
+                .recommends(review.getRecommends())
                 .build();
 
-        for (Hashtag hashtag : hashtags) {
-            BoardHash boardHash = BoardHash.builder()
-                    .hashtag(hashtag)
-                    .review(updatedReview)
-                    .build();
+        reviewBoardRepository.save(updatedReview);
 
-            boardHashService.connectTag(boardHash);
+        isExist = false;
+        for (Hashtag hashtag : hashtags) {
+            isExist = false;
+            for (BoardHash boardHash : boardHashes) {
+                if (boardHash.getHashtag().equals(hashtag)) {
+                    isExist = true;
+                }
+            }
+            if (!isExist) {
+                BoardHash boardHash = BoardHash.builder()
+                        .hashtag(hashtag)
+                        .review(updatedReview)
+                        .build();
+                boardHashService.connectTag(boardHash);
+            }
         }
 
-        reviewBoardRepository.save(updatedReview);
+        hashtagService.deleteNonExistReview();
+
         return updatedReview;
     }
 

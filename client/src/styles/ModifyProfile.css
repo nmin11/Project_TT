@@ -1,9 +1,45 @@
 #modify-profile {
   font-family: 'Noto Sans KR';
-  margin-top: 110px;
+}
+
+#profile-photo {
+  margin-top: 15px;
+}
+
+#profile-photo > img {
+  margin-bottom: 10px;
+}
+
+.modify-title {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#profile-password {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #profile-modify-name {
-  margin-top: 15px;
   font-size: 15px;
+  margin-bottom: -10px;
+}
+
+#modify-password {
+  font-size: 15px;
+}
+
+#modify-password-valid {
+  font-size: 15px;
+}
+
+#password-valid-check {
+  color: red;
+  margin-top: 5px;
+}
+
+#modify-error {
+  color: red;
+  margin-top: 5px;
 }

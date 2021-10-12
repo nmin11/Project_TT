@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useLocation } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import AWS from "aws-sdk";
 import "../styles/NewReview.css";
 axios.defaults.withCredentials = true;
 
 function NewReview() {
+  const history = useHistory();
   const { props } = useLocation();
   const [fileInfo, setFileInfo] = useState("");
   const [s3UploadedLink, setS3UploadedLink] = useState("");
@@ -85,8 +87,12 @@ function NewReview() {
         withCredentials: true,
       }
     )
-      .then((res) => {})
-      .catch((e) => {});
+      .then((res) => {
+        history.push('/destinationReviews');
+      })
+      .catch((e) => {
+        alert('글 작성에 실패하였습니다' + e);
+      });
   }
   return (
     <div>

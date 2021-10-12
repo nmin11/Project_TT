@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +21,6 @@ import java.util.List;
 public class ReviewBoardController {
 
     private final ReviewBoardService reviewBoardService;
-    private final S3Uploader s3Uploader;
     private final HashtagService hashtagService;
     private final UserService userService;
     private final BoardHashService boardHashService;
@@ -123,10 +120,8 @@ public class ReviewBoardController {
                 }
                 hashtags.add(hashtag);
             }
-            log.info("해시태그 등록 작업");
 
             User user = userService.findUserById(dto.getUserId());
-            log.info("유저 조회 작업");
 
             ReviewBoard review = reviewBoardService.initReview(user, dto);
 

@@ -196,6 +196,7 @@ public class UserController {
                     put("id", user.getId());
                     put("email", user.getEmail());
                     put("nickname", user.getNickname());
+                    put("password", user.getPassword());
                     put("reviews", user.getReviews());
                 }
             });

@@ -10,6 +10,8 @@ import Mypage from './components/Mypage';
 import Review from './components/Review';
 import ModifyProfile from './components/ModifyProfile';
 import Signin from './components/Signin';
+import NewReview from './components/NewReview';
+import ModifyReview from './components/ModifyReview';
 
 function App() {
   const [loginOn, setLoginOn] = useState(false); // 로그인 여부 (test : true로 바꾸고 개발)
@@ -50,6 +52,12 @@ function App() {
           </Route>
           <Route exact path="/modifyProfile">
             <ModifyProfile setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />
+          </Route>
+          <Route exact path="/newReview">
+            <NewReview />
+          </Route>
+          <Route exact path="/modifyReview">
+            <ModifyReview />
           </Route>
         </Switch>
         <Footer /> {/* 푸터 */}

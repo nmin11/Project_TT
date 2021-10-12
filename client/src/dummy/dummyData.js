@@ -118,4 +118,4 @@ const dummyComments = [
     updated_at: new Date(),
   },
 ];
-export { dummyMypageReview };
+export { dummyMypageReview,  dummyComments};

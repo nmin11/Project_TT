@@ -13,6 +13,11 @@ function NewReview() {
         method: "POST",
         data: {
           data: fileInfo,
+          userId : 'test',
+          usertitle : 'test11',
+          content : 'tt',
+          region : 'tt',
+          hashtags : 'tt'
         },
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",

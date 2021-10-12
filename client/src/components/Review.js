@@ -14,8 +14,8 @@ function Review() {
         <span id="writing-time">{`작성시간 : ${state.id}`}</span>
       </div>
 
-      <img src={state.src} alt={state.id}></img>
-      <div>{state.description}</div>
+      <img id="review-img" src={state.src} alt={state.id}></img>
+      <div id="reviewer-description">{state.description}</div>
       <Link
         to={{
           pathname: '/ModifyReview',
@@ -29,11 +29,10 @@ function Review() {
         {dummyComments.map((ele) => {
           if (ele.board_id === state.id) {
             return (
-              <div>
-                <div>----------------댓글------------------</div>
-                <div>댓글 작성자</div>
-                <div>{ele.created_at.toString()}</div>
-                <div>{ele.content}</div>
+              <div class="comment-content">
+                <span class="comment-user">{`댓글 작성자`}</span>
+                <span class="comment-createdat">{ele.created_at.toString()}</span>
+                <span class="comment-description">{ele.content}</span>
               </div>
             );
           }

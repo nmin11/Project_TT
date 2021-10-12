@@ -9,6 +9,7 @@ axios.defaults.withCredentials = true;
 
 function Mypage(props) {
   const [reviews, setReviews] = useState([]);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -39,6 +40,7 @@ function Mypage(props) {
       })
       .catch((e) => {});
   }
+
   // 내가 쓴 리뷰 map
   const UserReviewList = reviews.map((ele) => (
     <Link

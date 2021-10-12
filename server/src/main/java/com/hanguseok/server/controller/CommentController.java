@@ -40,6 +40,7 @@ public class CommentController {
     public ResponseEntity<?> editComment(@PathVariable("id") Long id, @RequestBody CommentDto dto) {
         try {
             Comment comment = commentService.editComment(id, dto.getContent());
+
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("content", comment.getContent());

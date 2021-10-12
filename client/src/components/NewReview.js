@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import AWS from "aws-sdk"
 
 axios.defaults.withCredentials = true;
 
@@ -12,6 +13,21 @@ function NewReview() {
     hashtags: "",
   });
 
+  AWS.config.update({
+    region: "ap-northeast-2", 
+    credentials: new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: "ap-northeast-2:c73b0ffb-7106-4208-b363-d97260804331", // cognito 인증 풀에서 받아온 키를 문자열로 입력합니다. (Ex. "ap-northeast-2...")
+    }),
+  })
+
+  const upload = new AWS.S3.ManagedUpload({
+    params: {
+      Bucket: "projecttt-image-bucket", // 업로드할 대상 버킷명
+      Key: fileInfo.name, // 업로드할 파일명 (* 확장자를 추가해야 합니다!)
+      Body: fileInfo, // 업로드할 파일 객체
+    },
+  })
+
   const fileChangeHandler = (e) => {
     setFileInfo(e.target.files[0]);
   };
@@ -21,28 +37,14 @@ function NewReview() {
   async function reviewUploadHandler () {
     const fd = new FormData();
     fd.append('image', fileInfo, fileInfo.name)
-    console.log(fd.getAll('image'))
-    await axios(
-      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review" + fd,
-      {
-        method: "POST",
-        data: {
-          userId : 'test',
-          usertitle : 'test11',
-          content : 'tt',
-          region : 'tt',
-          hashtags : 'tt'
-        },
-        headers: {  
-          "Content-Type": "multipart/form-data",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Credentials": "true",
-        },
-        withCredentials: true,
-      }
-    );
+    const promise = upload.promise()
+    promise.then(
+      function (data) {
+        alert("이미지 업로드에 성공했습니다.")
+      },
+      function (err) {
+        return alert("오류가 발생했습니다: ", err.message)
+      })
   };
   return (
     <div>

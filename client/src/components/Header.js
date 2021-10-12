@@ -11,6 +11,8 @@ function Header(props) {
   };
 
   const handleSignOut = () => {
+    // 로컬스토리지 accessToken 지우기
+    localStorage.setItem('accessToken', '');
     history.push('/');
     props.setLoginOn(false);
   };

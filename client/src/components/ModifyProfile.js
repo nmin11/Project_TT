@@ -8,7 +8,7 @@ function ModifyProfile(props) {
   const history = useHistory();
 
   const [changeNickname, setChangeNickname] = useState(props.userInfo.nickname);
-  const [changePassword, setChangePassword] = useState('');
+  const [changePassword, setChangePassword] = useState('projecttt32');
   const [changePasswordValid, setChangePasswordValid] = useState('');
   const [modifyError, setModifyError] = useState('');
 
@@ -64,11 +64,11 @@ function ModifyProfile(props) {
         </div>
         <div id="profile-password">
           <span className="modify-title">비밀번호</span>
-          <input id="modify-password" type="password" onChange={modifyPassword}></input>
+          <input id="modify-password" type="password" defaultValue={changePassword} onChange={modifyPassword}></input>
           <span className="modify-title">비밀번호 재입력</span>
           <input id="modify-password-valid" type="password" onChange={modifyPasswordValid}></input>
           <span id="password-valid-check">
-            {changePassword !== changePasswordValid ? `비밀번호가 일치하지 않습니다.` : null}
+            {changePassword === changePasswordValid ? `비밀번호가 일치합니다.` : null}
           </span>
         </div>
         <div id="profile-info">

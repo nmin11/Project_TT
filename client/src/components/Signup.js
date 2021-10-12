@@ -112,7 +112,7 @@ function Signup() {
   }
   return (
     <div id="container">
-      <span id="signup-title">로그인</span>
+      <span id="signup-title">회원가입</span>
       <div id="content">
         <div class="row_group">
           <h3>

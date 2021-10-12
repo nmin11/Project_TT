@@ -4,12 +4,14 @@ import com.hanguseok.server.entity.User;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Transactional
 public class TokenService {
 
     private final static String KEY = "hanguseokkey";
@@ -39,6 +41,7 @@ public class TokenService {
             return new HashMap<>() {
                 {
                     put("email", email);
+                    put("message", "토큰이 유효합니다.");
                 }
             };
         } catch (ExpiredJwtException e) {

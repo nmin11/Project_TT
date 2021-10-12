@@ -12,7 +12,7 @@ function DestinationReviews() {
     <div id="dest-review-content">
       <div id="landing-top-content">
         <video width="300" height="200" muted autoplay="autoplay" loop>
-          <source src="https://pixabay.com/ko/videos/download/video-4349_medium.mp4" type="video/mp4" muted />
+          <source src="https://pixabay.com/ko/videos/download/video-52849_medium.mp4" type="video/mp4" muted />
         </video>
         <span id="dest-top-text">{`여행지 리뷰`}</span>
       </div>

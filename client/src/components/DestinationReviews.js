@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../styles/Destination.css';
 import axios from "axios";
 import { dummyMypageReview } from '../dummy/dummyData';
@@ -10,7 +10,6 @@ axios.defaults.withCredentials = true;
 //TODO: 게시글 없을때 대체 이미지 만들기
 function DestinationReviews(props) {
   const [reviews, setReviews] = useState([]);
-  const history = useHistory();
 
   useEffect(() => {
     getReview()

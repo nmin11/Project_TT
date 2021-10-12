@@ -72,6 +72,7 @@ public class ReviewBoardController {
     public ResponseEntity<?> findReviewById(@PathVariable("id") Long id) {
         try {
             ReviewBoard review = reviewBoardService.findReviewById(id);
+            review.setView(review.getView() + 1);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());

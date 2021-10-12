@@ -30,13 +30,15 @@ function Review() {
       <div>
         {dummyComments.map((ele) => {
           if (ele.board_id === state.id) {
-            return (<div>
+            return (
+              <div>
                 <div>----------------댓글------------------</div>
-              <div>댓글 작성자</div>
-              <div>{ele.created_at.toString()}</div>
-              <div>{ele.content}</div>
-            </div>
-            );}
+                <div>댓글 작성자</div>
+                <div>{ele.created_at.toString()}</div>
+                <div>{ele.content}</div>
+              </div>
+            );
+          }
         })}
       </div>
     </div>

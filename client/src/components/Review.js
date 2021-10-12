@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 import { useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { dummyComments } from '../dummy/dummyData';
 import axios from 'axios';
 import '../styles/Review.css';
@@ -8,12 +8,33 @@ import '../styles/Review.css';
 axios.defaults.withCredentials = true;
 
 function Review() {
+  const history = useHistory();
   const { state , props } = useLocation();
   const [comment, setComment] = useState('');
   const changeComment = (e) => {
     setComment(e.target.value);
   }
-  
+  async function deleteReview() {
+    await axios(
+      'http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/' + state.id,
+      {
+        method: 'DELETE',
+        headers: {
+          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'DELETE',
+          'Access-Control-Allow-Credentials': 'true',
+        },
+        withCredentials: true,
+      }
+    )
+      .then((res) => {
+        history.push('/destinationReviews')
+      })
+      .catch((e) => {
+
+      });
+  }
   async function postComment() {
     await axios(
       'http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/comment',
@@ -48,8 +69,9 @@ function Review() {
         <span id="reviewer">{`글쓴이 : ${state.author}`}</span>
       </div>
 
-      <img id="review-img" src={state.src} alt={state.src}></img>
+      <img id="review-img" src={state.image} alt={state.image}></img>
       <div id="reviewer-description">{state.content}</div>
+      <span>
       <Link
         to={{
           pathname: '/ModifyReview',
@@ -58,6 +80,8 @@ function Review() {
       >
         <button id="review-modify-btn">글수정</button>
       </Link>
+      <button onClick={deleteReview}>글삭제(테스트용 아무나 삭제 가능)</button>
+      </span>
 
       <div>
         {dummyComments.map((ele) => {

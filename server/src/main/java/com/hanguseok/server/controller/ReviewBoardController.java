@@ -2,10 +2,7 @@ package com.hanguseok.server.controller;
 
 import com.hanguseok.server.dto.RecommendDto;
 import com.hanguseok.server.dto.ReviewDto;
-import com.hanguseok.server.entity.BoardHash;
-import com.hanguseok.server.entity.Hashtag;
-import com.hanguseok.server.entity.ReviewBoard;
-import com.hanguseok.server.entity.User;
+import com.hanguseok.server.entity.*;
 import com.hanguseok.server.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +45,6 @@ public class ReviewBoardController {
                                 put("content", review.getContent());
                                 put("region", review.getRegion());
                                 put("author", review.getUser().getNickname());
-                                put("comments", review.getComments());
                                 List<String> hashtags = new ArrayList<>();
                                 for (BoardHash boardHash : review.getHashtags()) {
                                     hashtags.add(boardHash.getHashtag().getName());
@@ -80,7 +76,19 @@ public class ReviewBoardController {
                     put("title", review.getTitle());
                     put("image", review.getImage());
                     put("content", review.getContent());
-                    put("comments", review.getComments());
+                    put("comments", new HashMap<>() {
+                        {
+                            List<Comment> comments = review.getComments();
+                            for (Comment comment : comments) {
+                                put(comment.getId(), new HashMap<>() {
+                                    {
+                                        put("comment-writer", comment.getUser().getNickname());
+                                        put("comment-content", comment.getContent());
+                                    }
+                                });
+                            }
+                        }
+                    });
                     List<String> hashtags = new ArrayList<>();
                     for (BoardHash boardHash : review.getHashtags()) {
                         hashtags.add(boardHash.getHashtag().getName());
@@ -103,15 +111,10 @@ public class ReviewBoardController {
     }
 
     @PostMapping
-    public ResponseEntity<?> uploadReview(@RequestParam("data") MultipartFile multipartFile,
-                                          @RequestParam("userId") Long id,
-                                          @RequestParam("title") String title,
-                                          @RequestParam("content") String content,
-                                          @RequestParam("region") String region,
-                                          @RequestParam("hashtags") List<String> hash) throws IOException {
+    public ResponseEntity<?> uploadReview(@RequestBody ReviewDto dto) {
         try {
             List<Hashtag> hashtags = new ArrayList<>();
-            for (String el : hash) {
+            for (String el : dto.getHashtags()) {
                 Hashtag hashtag;
                 if (!hashtagService.alreadyExist(el)) {
                     hashtag = hashtagService.saveHashtag(el);
@@ -122,17 +125,10 @@ public class ReviewBoardController {
             }
             log.info("해시태그 등록 작업");
 
-            User user = userService.findUserById(id);
+            User user = userService.findUserById(dto.getUserId());
             log.info("유저 조회 작업");
 
-            ReviewDto dto = new ReviewDto();
-            dto.setUserId(id);
-            dto.setTitle(title);
-            dto.setContent(content);
-            dto.setRegion(region);
-            dto.setHashtags(hash);
             ReviewBoard review = reviewBoardService.initReview(user, dto);
-            log.info("리뷰 초기화 작업");
 
             for (Hashtag hashtag : hashtags) {
                 BoardHash boardHash = BoardHash.builder()
@@ -142,27 +138,6 @@ public class ReviewBoardController {
 
                 boardHashService.connectTag(boardHash);
             }
-            log.info("다대다 연결 작업");
-
-            try {
-                String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
-            } catch (Exception e) {
-                log.error("이미지 업로드 에러 : " + e);
-            }
-
-            log.info("파일 업로드 이후 확인");
-
-            ReviewBoard updatedReview = ReviewBoard.builder()
-                    .id(review.getId())
-                    .user(user)
-                    .title(review.getTitle())
-                    .content(review.getContent())
-                    .region(review.getRegion())
-                    .view(0)
-                    .image("uploadUrl")
-                    .build();
-            reviewBoardService.saveReview(updatedReview);
-            log.info("파일 연동 작업");
 
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
@@ -203,9 +178,9 @@ public class ReviewBoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editReview(@RequestParam("data") MultipartFile multipartFile, @PathVariable("id") Long id, ReviewDto dto) {
+    public ResponseEntity<?> editReview(@PathVariable("id") Long id, @RequestBody ReviewDto dto) {
         try {
-            ReviewBoard review = reviewBoardService.editReview(id, dto, multipartFile);
+            ReviewBoard review = reviewBoardService.editReview(id, dto);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());

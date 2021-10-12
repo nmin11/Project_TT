@@ -27,6 +27,8 @@ public class ReviewBoardService {
 
     private final ReviewBoardRepository reviewBoardRepository;
     private final S3Uploader s3Uploader;
+    private final HashtagService hashtagService;
+    private final BoardHashService boardHashService;
 
     public List<ReviewBoard> findAllReviews() {
         return reviewBoardRepository.findAll();
@@ -49,8 +51,10 @@ public class ReviewBoardService {
                     .content(dto.getContent())
                     .region(dto.getRegion())
                     .view(0)
+                    .image(dto.getImage())
                     .build();
             System.out.println("--- 리뷰 저장 직전 확인 ---");
+            reviewBoardRepository.save(review);
             return review;
         } catch (Exception e) {
             log.error("Review post error : " + e);
@@ -58,25 +62,46 @@ public class ReviewBoardService {
         }
     }
 
-    public void saveReview(ReviewBoard review) {
-        reviewBoardRepository.save(review);
-    }
-
-    public ReviewBoard editReview(Long id, ReviewDto dto, MultipartFile multipartFile) throws IOException {
+    public ReviewBoard editReview(Long id, ReviewDto dto) {
         ReviewBoard review = reviewBoardRepository.findById(id).get();
-        String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
+
+        List<Hashtag> hashtags = new ArrayList<>();
+        for (String el : dto.getHashtags()) {
+            Hashtag hashtag;
+            if (!hashtagService.alreadyExist(el)) {
+                hashtag = hashtagService.saveHashtag(el);
+            } else {
+                hashtag = hashtagService.findHashtagByName(el);
+            }
+            hashtags.add(hashtag);
+        }
+
         ReviewBoard updatedReview = ReviewBoard.builder()
                 .id(review.getId())
+                .user(review.getUser())
                 .title(dto.getTitle())
                 .view(review.getView())
                 .content(dto.getContent())
-                .image(uploadUrl)
+                .image(dto.getImage())
                 .comments(review.getComments())
                 .region(dto.getRegion())
                 .build();
 
+        for (Hashtag hashtag : hashtags) {
+            BoardHash boardHash = BoardHash.builder()
+                    .hashtag(hashtag)
+                    .review(updatedReview)
+                    .build();
+
+            boardHashService.connectTag(boardHash);
+        }
+
         reviewBoardRepository.save(updatedReview);
         return updatedReview;
+    }
+
+    public void saveReview(ReviewBoard review) {
+        reviewBoardRepository.save(review);
     }
 
 }

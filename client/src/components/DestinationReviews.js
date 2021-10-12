@@ -1,12 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "../styles/Destination.css";
-import Review from "./Review";
-import { dummyMypageReview } from "../dummy/dummyData";
+import { dummyMypageReview} from "../dummy/dummyData";
+
 
 function DestinationReviews() {
+  const history = useHistory();
+  function pushToPost(){
+  
+    history.push('/newReview')
+  };
+
   return (
     <div>
-      <button>글쓰기</button>
+      <button onClick={pushToPost}>글쓰기</button>
       <div class="boards-block">
         {dummyMypageReview.map((ele) => (
           <div>
@@ -14,7 +20,9 @@ function DestinationReviews() {
               <Link
                 to={{
                   pathname: "/Review",
-                  state: {src: ele.src,
+                  state: {
+                  id: ele.id,
+                  src: ele.src,
                   title: ele.title,
                   description: ele.description,
                   count: ele.count,

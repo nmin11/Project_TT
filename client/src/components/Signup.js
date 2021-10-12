@@ -130,7 +130,7 @@ function Signup() {
           {emailValidation === '' || emailValidation === true ? (
             <div></div>
           ) : (
-            <div>중복되거나 사용 불가능한 이메일입니다.</div>
+            <div className="alert-message">중복이거나 사용 불가능한 이메일입니다</div>
           )}
           <h3>
             <label for="password">비밀번호</label>
@@ -162,14 +162,16 @@ function Signup() {
           {nicknameValidation === '' || nicknameValidation === true ? (
             <div></div>
           ) : (
-            <div>이미 사용중인 닉네임입니다</div>
+            <div className="alert-message">이미 사용중인 닉네임입니다</div>
           )}
         </div>
+        {errorMessage === "" ? null : (
+          <div className="alert-box">{errorMessage}</div>
+        )}
+        <div>
+          <button className="signup-btn" onClick={transfortForm}>회원 가입</button>
+        </div>
       </div>
-      {errorMessage === '' ? null : <div className="alert-box">{errorMessage}</div>}
-      <button id="signin-btn" onClick={transfortForm}>
-        회원 가입
-      </button>
     </div>
   );
 }

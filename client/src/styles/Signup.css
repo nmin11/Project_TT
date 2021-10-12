@@ -75,7 +75,8 @@ input {
   margin-top: 1rem;
 }
 
-.signup-title {
-    size:20px;
-    color: #3d3d3d;
+#signup-title {
+    font-size: 22px;
+    margin-top: 10px;
+    font-weight: 500;
 }

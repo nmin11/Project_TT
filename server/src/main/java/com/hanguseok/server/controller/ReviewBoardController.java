@@ -73,6 +73,7 @@ public class ReviewBoardController {
         try {
             ReviewBoard review = reviewBoardService.findReviewById(id);
             review.setView(review.getView() + 1);
+            reviewBoardService.saveReview(review);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());

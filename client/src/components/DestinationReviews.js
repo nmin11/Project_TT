@@ -10,6 +10,13 @@ function DestinationReviews() {
 
   return (
     <div id="dest-review-content">
+      <div id="landing-top-content">
+        <video width="300" height="200" muted autoplay="autoplay" loop>
+          <source src="https://pixabay.com/ko/videos/download/video-4349_medium.mp4" type="video/mp4" muted />
+        </video>
+        <span id="dest-top-text">{`여행지 리뷰`}</span>
+      </div>
+
       {dummyMypageReview.map((ele) => (
         <div className="board-block">
           <Link

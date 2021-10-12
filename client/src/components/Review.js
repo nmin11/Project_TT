@@ -8,7 +8,7 @@ import '../styles/Review.css';
 axios.defaults.withCredentials = true;
 
 function Review() {
-  const { state } = useLocation();
+  const { state , props } = useLocation();
   const [comment, setComment] = useState('');
   const changeComment = (e) => {
     setComment(e.target.value);
@@ -45,12 +45,11 @@ function Review() {
     <div id="review-header">
       <div id="review-title">{state.title}</div>
       <div id="review-content">
-        <span id="reviewer">{`글쓴이 : ${state.id}`}</span>
-        <span id="writing-time">{`작성시간 : ${state.id}`}</span>
+        <span id="reviewer">{`글쓴이 : ${state.author}`}</span>
       </div>
 
-      <img id="review-img" src={state.src} alt={state.id}></img>
-      <div id="reviewer-description">{state.description}</div>
+      <img id="review-img" src={state.src} alt={state.src}></img>
+      <div id="reviewer-description">{state.content}</div>
       <Link
         to={{
           pathname: '/ModifyReview',

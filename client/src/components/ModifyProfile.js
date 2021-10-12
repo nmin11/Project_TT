@@ -78,8 +78,8 @@ function ModifyProfile(props) {
               <li className="profile-description">{props.userInfo.email}</li>
             </ul>
             <ul>
-              <li className="profile-title">가입일</li>
-              <li className="profile-description">2021.10.06</li>
+              <li className="profile-title">{''}</li>
+              <li className="profile-description">{''}</li>
               <li id="modify-error">{modifyError}</li>
             </ul>
           </div>

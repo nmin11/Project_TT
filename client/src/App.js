@@ -15,13 +15,20 @@ import ModifyReview from './components/ModifyReview';
 
 function App() {
   const [loginOn, setLoginOn] = useState(false); // 로그인 여부 (test : true로 바꾸고 개발)
-  const [modalOn, setModalOn] = useState(false);
+  const [modalOn, setModalOn] = useState(false); // 모달 오픈 여부
+  const [userInfo, setUserInfo] = useState(null); // 로그인 회원 정보
 
   return (
     <BrowserRouter>
       <div className="App">
         <GlobalStyles /> {/* CSS 전역 설정 */}
-        <Signin modalOn={modalOn} setModalOn={setModalOn} setLoginOn={setLoginOn} />
+        <Signin
+          modalOn={modalOn}
+          setModalOn={setModalOn}
+          setLoginOn={setLoginOn}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+        />
         <Header modalOn={modalOn} setModalOn={setModalOn} loginOn={loginOn} setLoginOn={setLoginOn} />
         {/* 헤더(로고, 네비게이션) */}
         <Switch>
@@ -35,7 +42,7 @@ function App() {
             <ThemeTravel />
           </Route>
           <Route exact path="/myPage">
-            <Mypage setLoginOn={setLoginOn} />
+            <Mypage setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />
           </Route>
           <Route exact path="/signup">
             <Signup />
@@ -44,7 +51,7 @@ function App() {
             <Review />
           </Route>
           <Route exact path="/modifyProfile">
-            <ModifyProfile setLoginOn={setLoginOn} />
+            <ModifyProfile setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />
           </Route>
           <Route exact path="/newReview">
             <NewReview />

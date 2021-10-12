@@ -43,7 +43,7 @@ function Signup() {
         data: {
           email: userinfo.email,
           password: userinfo.password,
-          nickname: userinfo.username,
+          nickname: userinfo.nickname,
         },
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",

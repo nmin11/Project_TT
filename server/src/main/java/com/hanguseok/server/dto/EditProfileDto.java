@@ -6,5 +6,6 @@ import lombok.Data;
 public class EditProfileDto {
 
     String nickname;
+    String password;
 
 }

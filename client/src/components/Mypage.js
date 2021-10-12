@@ -1,26 +1,76 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Mypage.css';
 import UserReview from './UserReview';
 import { useHistory, Link } from 'react-router-dom';
-import { dummyMypageReview } from '../dummy/dummyData';
 import axios from 'axios';
 import { API_URL } from '../config/constants';
 
+axios.defaults.withCredentials = true;
+
 function Mypage(props) {
+  const [reviews, setReviews] = useState([]);
   const history = useHistory();
 
-  // !이슈 : 새로고침 시 데이터 유지하는 방법 공부하기
-  useEffect(() => {});
+  useEffect(() => {
+    getReview();
+  }, []);
 
+  // 유저 리뷰
+  async function getReview() {
+    await axios(`${API_URL}/review/${''}`, {
+      method: 'GET',
+      headers: {
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Credentials': 'true',
+      },
+      withCredentials: true,
+    })
+      .then((res) => {
+        let reviewObj = res.data;
+        let objectToArray = [];
+        let keys = Object.keys(reviewObj);
+        for (let i = 0; i < keys.length; i++) {
+          objectToArray.push({ ...reviewObj[keys[i]], id: keys[i] });
+        }
+        setReviews(objectToArray);
+        console.log(res.data);
+      })
+      .catch((e) => {});
+  }
   // 내가 쓴 리뷰 map
-  const UserReviewList = dummyMypageReview.map((ele) => (
-    <UserReview
-      src={ele.src}
-      title={ele.title}
-      description={ele.description}
-      count={ele.count}
-      likeCount={ele.likeCount}
-    />
+  const UserReviewList = reviews.map((ele) => (
+    <Link
+      className="userReview-link"
+      to={{
+        pathname: '/review',
+        props: props,
+        state: {
+          id: ele.id,
+          author: ele.author,
+          content: ele.content,
+          hashtags: ele.hashtags,
+          image: ele.image,
+          recommend: ele.recommend,
+          region: ele.region,
+          title: ele.title,
+          view: ele.view,
+        },
+      }}
+    >
+      <UserReview
+        className="userReviews"
+        src={ele.image}
+        title={ele.title}
+        author={ele.author}
+        region={ele.region}
+        content={ele.content}
+        view={ele.view}
+        recommend={ele.recommend}
+        hashtags={ele.hashtags}
+      />
+    </Link>
   ));
 
   // 회원 탈퇴 로직
@@ -64,8 +114,8 @@ function Mypage(props) {
               <li className="profile-description">{props.userInfo.email}</li>
             </ul>
             <ul>
-              <li className="profile-title">가입일</li>
-              <li className="profile-description">{props.userInfo.createdAt}</li>
+              <li className="profile-title">{''}</li>
+              <li className="profile-description">{''}</li>
             </ul>
           </div>
         </div>

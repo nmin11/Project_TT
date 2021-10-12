@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useLocation } from 'react-router';
 import axios from "axios";
 import AWS from "aws-sdk";
 import "../styles/NewReview.css";
 axios.defaults.withCredentials = true;
 
 function NewReview() {
+  const { props } = useLocation();
   const [fileInfo, setFileInfo] = useState("");
   const [s3UploadedLink, setS3UploadedLink] = useState("");
   const [reviewData, setReviewData] = useState({
@@ -51,11 +53,13 @@ function NewReview() {
     );
   }
   const hashtagHandler = (e) => {
-    if (e.target.value[0] !== "#") {
+    if (e.target.value[0] !== "#" && e.key !== "#") {
       e.target.value = "#" + e.target.value;
     }
     if (e.key === "Enter") {
-      reviewData.hashtags.push(e.target.value.slice(1));
+      let ht = reviewData.hashtags
+      ht.push(e.target.value.slice(1))
+      setReviewData({...reviewData, hashtags: ht});
       e.target.value = "";
     }
   };
@@ -66,11 +70,11 @@ function NewReview() {
         method: "POST",
         data: {
           image: s3UploadedLink,
-          userId: 36,
+          userId: props.userInfo.id,
           title: reviewData.title,
           content: reviewData.content,
           region: reviewData.region,
-          hashtags: ["재미있는", "신나는", "조용한"],
+          hashtags: reviewData.hashtags,
         },
         headers: {
           "Access-Control-Allow-Headers": "Content-Type",
@@ -84,7 +88,6 @@ function NewReview() {
       .then((res) => {})
       .catch((e) => {});
   }
-
   return (
     <div>
       <div>
@@ -98,6 +101,9 @@ function NewReview() {
           cols="40"
           onChange={reviewDataHandler("title")}
         ></textarea>
+        <div>
+        작성자 : {props.userInfo.nickname}
+        </div>
       </div>
       <div>
         <textarea
@@ -113,8 +119,8 @@ function NewReview() {
           placeholder="해쉬태그를 작성해주세요"
           maxLength="15"
           size="40"
-          onChange={hashtagHandler}
-          onKeyPress={hashtagHandler}
+          onChange={hashtagHandler} 
+          onKeyPress={hashtagHandler} //onKeyPress이벤트가 엔터키 입력때문에 필요하나 한글에는 적용되지않는 문제가 있음
         ></input>
         <div>
           {reviewData.hashtags.map((ele) => {

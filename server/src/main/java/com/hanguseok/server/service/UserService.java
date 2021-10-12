@@ -1,5 +1,6 @@
 package com.hanguseok.server.service;
 
+import com.hanguseok.server.dto.EditProfileDto;
 import com.hanguseok.server.dto.LoginDto;
 import com.hanguseok.server.dto.RegisterDto;
 import com.hanguseok.server.entity.User;
@@ -63,12 +64,12 @@ public class UserService {
         else return false;
     }
 
-    public User editProfile(Long id, String nickname) {
+    public User editProfile(Long id, EditProfileDto dto) {
         User userRepo = userRepository.findById(id).get();
         User user = User.builder()
                 .id(id)
-                .nickname(nickname)
-                .password(userRepo.getPassword())
+                .nickname(dto.getNickname())
+                .password(dto.getPassword())
                 .email(userRepo.getEmail())
                 .comments(userRepo.getComments())
                 .reviews(userRepo.getReviews())

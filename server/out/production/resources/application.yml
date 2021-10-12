@@ -3,10 +3,14 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
+  http:
+    multipart:
+      max-file-size: 26240KB
+      max-request-size: 26240KB
 
   datasource:
     url: jdbc:mysql://projecttt-databse-deploy.cpj1bduzsphj.ap-northeast-2.rds.amazonaws.com:13306/test?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC

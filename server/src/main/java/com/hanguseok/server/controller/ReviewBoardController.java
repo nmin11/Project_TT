@@ -103,10 +103,15 @@ public class ReviewBoardController {
     }
 
     @PostMapping
-    public ResponseEntity<?> uploadReview(@RequestParam("data") MultipartFile multipartFile, @RequestBody ReviewDto dto) throws IOException {
+    public ResponseEntity<?> uploadReview(@RequestParam("data") MultipartFile multipartFile,
+                                          @RequestParam("userId") Long id,
+                                          @RequestParam("title") String title,
+                                          @RequestParam("content") String content,
+                                          @RequestParam("region") String region,
+                                          @RequestParam("hashtags") List<String> hash) throws IOException {
         try {
             List<Hashtag> hashtags = new ArrayList<>();
-            for (String el : dto.getHashtags()) {
+            for (String el : hash) {
                 Hashtag hashtag;
                 if (!hashtagService.alreadyExist(el)) {
                     hashtag = hashtagService.saveHashtag(el);
@@ -115,10 +120,19 @@ public class ReviewBoardController {
                 }
                 hashtags.add(hashtag);
             }
+            log.info("해시태그 등록 작업");
 
-            User user = userService.findUserById(dto.getUserId());
+            User user = userService.findUserById(id);
+            log.info("유저 조회 작업");
 
+            ReviewDto dto = new ReviewDto();
+            dto.setUserId(id);
+            dto.setTitle(title);
+            dto.setContent(content);
+            dto.setRegion(region);
+            dto.setHashtags(hash);
             ReviewBoard review = reviewBoardService.initReview(user, dto);
+            log.info("리뷰 초기화 작업");
 
             for (Hashtag hashtag : hashtags) {
                 BoardHash boardHash = BoardHash.builder()
@@ -128,16 +142,27 @@ public class ReviewBoardController {
 
                 boardHashService.connectTag(boardHash);
             }
+            log.info("다대다 연결 작업");
 
-            String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
-            review.builder()
+            try {
+                String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
+            } catch (Exception e) {
+                log.error("이미지 업로드 에러 : " + e);
+            }
+
+            log.info("파일 업로드 이후 확인");
+
+            ReviewBoard updatedReview = ReviewBoard.builder()
+                    .id(review.getId())
+                    .user(user)
                     .title(review.getTitle())
                     .content(review.getContent())
                     .region(review.getRegion())
                     .view(0)
-                    .image(uploadUrl)
+                    .image("uploadUrl")
                     .build();
-            reviewBoardService.saveReview(review);
+            reviewBoardService.saveReview(updatedReview);
+            log.info("파일 연동 작업");
 
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
@@ -150,6 +175,7 @@ public class ReviewBoardController {
                 }
             });
         } catch (Exception e) {
+            log.error("리뷰 등록 에러 : " + e);
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
                     put("message", "잘못된 등록 요청입니다!");

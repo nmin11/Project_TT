@@ -74,3 +74,9 @@ input {
   display: block;
   margin-top: 1rem;
 }
+
+#signup-title {
+    font-size: 22px;
+    margin-top: 10px;
+    font-weight: 500;
+}

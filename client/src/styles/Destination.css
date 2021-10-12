@@ -39,15 +39,19 @@
 }
 
 .board-block {
-  width: 50%;
-  display: flex;
+  display: inline-block;
   flex-direction: column;
-  align-items: center;
   border: 5px solid rgb(219, 219, 219);
-  margin-top: 20px;
   padding: 10px;
   cursor: pointer;
   border-radius: 10px;
+  margin: 10px;
+  
+}
+.reviews-block{
+  width:90vw;
+  display: block;
+  text-align: center;
 }
 
 .review-link {

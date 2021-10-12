@@ -65,7 +65,7 @@ function Mypage(props) {
             </ul>
             <ul>
               <li className="profile-title">가입일</li>
-              <li className="profile-description">2021.10.06</li>
+              <li className="profile-description">{props.userInfo.createdAt}</li>
             </ul>
           </div>
         </div>

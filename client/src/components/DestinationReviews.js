@@ -37,7 +37,9 @@ function DestinationReviews() {
         </div>
       ))}
 
-      <button onClick={pushToPost}>글쓰기</button>
+      <button id="post-btn" onClick={pushToPost}>
+        글쓰기
+      </button>
     </div>
   );
 }

@@ -1,0 +1,30 @@
+#review-header {
+  font-family: 'NanumSquare';
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#review-title {
+  margin-top: 15px;
+  font-size: 30px;
+}
+
+#review-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#reviewer {
+  margin-top: 10px;
+}
+
+#writing-time {
+  margin-top: 10px;
+}
+
+#review-modify-btn {
+  margin-top: 10px;
+}

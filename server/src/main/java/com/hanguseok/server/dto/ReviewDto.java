@@ -12,6 +12,7 @@ public class ReviewDto {
     private String title;
     private String content;
     private String region;
+    private String image;
     private List<String> hashtags;
 
 }

@@ -4,11 +4,13 @@ import com.hanguseok.server.dto.CommentDto;
 import com.hanguseok.server.entity.Comment;
 import com.hanguseok.server.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
+@Slf4j
 @RestController
 @RequestMapping("/comment")
 @CrossOrigin(origins = "http://projecttt-client-bucket.s3-website.ap-northeast-2.amazonaws.com", allowedHeaders = "*", allowCredentials = "true")
@@ -67,6 +69,7 @@ public class CommentController {
                 }
             });
         } catch (Exception e) {
+            log.error("댓글 삭제 실패 : " + e);
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
                     put("message", "댓글 삭제에 실패했습니다!");

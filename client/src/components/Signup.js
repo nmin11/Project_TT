@@ -1,5 +1,6 @@
 import "../styles/Signup.css";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -13,52 +14,26 @@ function Signup() {
     birthday: "",
   });
   const [emailValidation, setEmailValidation] = useState("");
+  const [nicknameValidation, setNicknameValidation] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const handleInputValue = (key) => (e) => {
     setuserinfo({ ...userinfo, [key]: e.target.value });
   };
   const emailRule =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const history = useHistory();
   // 회원가입
   async function transfortForm() {
     //모든필드의 값이 null이 아니어야 함.
     if (
       userinfo.email === "" ||
       userinfo.password === "" ||
-      userinfo.username === "" ||
-      userinfo.nickname === "" ||
-      userinfo.birthday === ""
+      userinfo.nickname === ""
     ) {
       setErrorMessage("모든 내용을 작성해 주세요");
       return null;
     }
     setErrorMessage("");
-
-    //중복체크 GET 요청
-    await axios(
-      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/duplication-check",
-      {
-        method: "GET",
-        data: {
-          email: userinfo.email,
-          password: userinfo.password,
-          nickname: userinfo.username,
-        },
-        headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST",
-          "Access-Control-Allow-Credentials": "true",
-        },
-        withCredentials: true,
-      }
-    ).catch((e) => {
-      if (e.response) {
-        //setErrorMessage(e.response.data);
-        console.log(e.response);
-      }
-    });
 
     //회원가입 POST
     await axios(
@@ -78,7 +53,13 @@ function Signup() {
         },
         withCredentials: true,
       }
-    );
+    )
+      .then((res) => {
+        history.push("/");
+      })
+      .catch((e) => {
+        setErrorMessage("회원가입에 실패하였습니다");
+      });
   }
 
   const checkingPassword = (e) => {
@@ -89,12 +70,12 @@ function Signup() {
       setErrorMessage("");
     }
   };
-  //POST요청으로 중복 이메일 찾기
+  //중복 이메일 찾기
   async function emailValidationCheck(e) {
-    if (!userinfo.email.match(emailRule)) {
-      setEmailValidation(false);
-    }
-    setEmailValidation(true);
+    //정규식 처리 나중에
+    // if (!emailRule.test(String(userinfo.email))) {
+    //   setEmailValidation(false);
+    // }
     await axios(
       "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/email-duplication-check/" +
         userinfo.email,
@@ -108,9 +89,37 @@ function Signup() {
         },
         withCredentials: true,
       }
-    ).then((res)=>res.data).catch((e)=>e.data)
+    )
+      .then((res) => {
+        setEmailValidation(true);
+      })
+      .catch((e) => {
+        setEmailValidation(false);
+      });
   }
-
+  //중복 닉네임 찾기
+  async function nicknameValidationCheck() {
+    await axios(
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/nickname-duplication-check/" +
+        userinfo.nickname,
+      {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        withCredentials: true,
+      }
+    )
+      .then((res) => {
+        setNicknameValidation(true);
+      })
+      .catch((e) => {
+        setNicknameValidation(false);
+      });
+  }
   return (
     <div id="container">
       <div id="content">
@@ -160,17 +169,6 @@ function Signup() {
         </div>
         <div class="row_group">
           <h3>
-            <label for="name">이름</label>
-          </h3>
-          <span class="input_box">
-            <input
-              type="text"
-              id="name"
-              class="int"
-              onChange={handleInputValue("username")}
-            ></input>
-          </span>
-          <h3>
             <label for="nickname">닉네임</label>
           </h3>
           <span class="input_box">
@@ -178,20 +176,15 @@ function Signup() {
               type="text"
               id="nickname"
               class="int"
+              onBlur={nicknameValidationCheck}
               onChange={handleInputValue("nickname")}
             ></input>
           </span>
-          <h3>생년월일</h3>
-          <span class="input_box">
-            <input
-              type="date"
-              name="bday"
-              required
-              pattern="\d{4}-\d{2}-\d{2}"
-              placeholder="#### / ## / ##"
-              onChange={handleInputValue("birthday")}
-            />
-          </span>
+          {nicknameValidation === "" || nicknameValidation === true ? (
+            <div></div>
+          ) : (
+            <div>이미 사용중인 닉네임입니다</div>
+          )}
         </div>
       </div>
       {errorMessage === "" ? null : (

@@ -10,6 +10,24 @@
   align-items: center;
 }
 
+.userReview-link {
+  text-decoration: none;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  border-bottom: 1px solid rgb(219, 219, 219);
+  border-radius: 10px;
+}
+
+.userReview-link:hover {
+  background-color: rgb(181, 245, 213);
+}
+
+.userReviews {
+  cursor: pointer;
+}
+
 #profile-photo {
   display: flex;
   flex-direction: column;

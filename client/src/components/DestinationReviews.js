@@ -9,7 +9,6 @@ axios.defaults.withCredentials = true;
 //TODO: 게시글 없을때 대체 이미지 만들기
 function DestinationReviews(props) {
   const [reviews, setReviews] = useState([]);
-  const history = useHistory();
 
   useEffect(() => {
     getReview();

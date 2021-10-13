@@ -41,7 +41,7 @@
 .board-block {
   display: inline-block;
   flex-direction: column;
-  border: 5px solid rgb(219, 219, 219);
+  border: 1px solid rgb(219, 219, 219);
   cursor: pointer;
   border-radius: 10px;
   margin: 10px;
@@ -118,5 +118,6 @@
 #dest-wrapper{
   background-color: white;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 10px;
+  padding: 5px;
 }

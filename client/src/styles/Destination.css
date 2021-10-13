@@ -106,3 +106,9 @@
 #post-btn:hover {
   background-color: teal;
 }
+
+.hashtags{
+  color: rgb(35, 49, 255);
+  font-size: 14px;
+  padding-top: 5px;
+}

@@ -34,6 +34,9 @@ function DestinationReviews(props) {
         for (let i = 0; i < keys.length; i++) {
           objectToArray.push({ ...reviewObj[keys[i]], id: keys[i] });
         }
+        objectToArray.sort(function(a, b){
+          return b.recommend - a.recommend
+        });
         setReviews(objectToArray);
       })
       .catch((e) => {});

@@ -3,6 +3,8 @@ package com.hanguseok.server.controller;
 import com.hanguseok.server.dto.EditProfileDto;
 import com.hanguseok.server.dto.LoginDto;
 import com.hanguseok.server.dto.RegisterDto;
+import com.hanguseok.server.entity.BoardHash;
+import com.hanguseok.server.entity.ReviewBoard;
 import com.hanguseok.server.entity.User;
 import com.hanguseok.server.service.TokenService;
 import com.hanguseok.server.service.UserService;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -31,8 +35,8 @@ public class UserController {
         try {
             User user = userService.findUser(dto);
             if (userService.passwordCheck(user, dto.getPassword())) {
-                String accessToken = tokenService.createJwtToken(user, 3000L);
-                String refreshToken = tokenService.createJwtToken(user, 6000L);
+                String accessToken = tokenService.createJwtToken(user, 1L);
+                String refreshToken = tokenService.createJwtToken(user, 2L);
                 Cookie cookie = new Cookie("refreshToken", refreshToken);
                 response.addCookie(cookie);
 
@@ -186,6 +190,51 @@ public class UserController {
         }
     }
 
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<?> getUserInfo(@PathVariable("id") Long id) {
+        try {
+            User user = userService.findUserById(id);
+
+            return ResponseEntity.ok().body(new HashMap<>() {
+                {
+                    put("message", "유저 정보가 성공적으로 조회되었습니다.");
+                    put("id", user.getId());
+                    put("email", user.getEmail());
+                    put("nickname", user.getNickname());
+                    put("reviews", new HashMap<>() {
+                        {
+                            List<ReviewBoard> reviews = user.getReviews();
+                            for (ReviewBoard review : reviews) {
+                                put(review.getId(), new HashMap<>() {
+                                    {
+                                        put("title", review.getTitle());
+                                        put("content", review.getContent());
+                                        put("image", review.getImage());
+                                        put("author", review.getUser().getNickname());
+                                        put("region", review.getRegion());
+                                        put("view", review.getView());
+                                        put("recommend", review.getRecommends().size());
+                                        List<String> hashtags = new ArrayList<>();
+                                        for (BoardHash boardHash : review.getHashtags()) {
+                                            hashtags.add(boardHash.getHashtag().getName());
+                                        }
+                                        put("hashtags", hashtags);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new HashMap<>() {
+                {
+                    put("message", "유저 정보 조회에 실패했습니다.");
+                }
+            });
+        }
+    }
+
     @PutMapping("/profile/{id}")
     public ResponseEntity<?> editProfile(@PathVariable("id") Long id, @RequestBody EditProfileDto dto) {
         try {
@@ -196,8 +245,29 @@ public class UserController {
                     put("id", user.getId());
                     put("email", user.getEmail());
                     put("nickname", user.getNickname());
-                    put("password", user.getPassword());
-                    put("reviews", user.getReviews());
+                    put("reviews", new HashMap<>() {
+                        {
+                            List<ReviewBoard> reviews = user.getReviews();
+                            for (ReviewBoard review : reviews) {
+                                put(review.getId(), new HashMap<>() {
+                                    {
+                                        put("title", review.getTitle());
+                                        put("content", review.getContent());
+                                        put("image", review.getImage());
+                                        put("author", review.getUser().getNickname());
+                                        put("region", review.getRegion());
+                                        put("view", review.getView());
+                                        put("recommend", review.getRecommends().size());
+                                        List<String> hashtags = new ArrayList<>();
+                                        for (BoardHash boardHash : review.getHashtags()) {
+                                            hashtags.add(boardHash.getHashtag().getName());
+                                        }
+                                        put("hashtags", hashtags);
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             });
         } catch (Exception e) {

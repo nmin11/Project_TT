@@ -43,3 +43,8 @@
   color: red;
   margin-top: 5px;
 }
+
+#profile-wrapper {
+  margin-top: 15px;
+  margin-bottom: -30px;
+}

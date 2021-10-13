@@ -46,6 +46,7 @@ function DestinationReviews(props) {
       </div>
       {props.loginOn ? (
         <Link
+          className="post-links"
           to={{
             pathname: '/newReview',
             props: props,

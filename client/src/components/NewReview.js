@@ -139,6 +139,9 @@ function NewReview(props) {
         alert("글 작성에 실패하였습니다" + e);
       });
   }
+  function tester(e){
+    setS3UploadedLink(e.target.value)
+  }
   return (
     <div id="new-review-content">
       <div id="text-title-content">
@@ -171,6 +174,7 @@ function NewReview(props) {
           이미지 업로드
         </button>
         <div id="upload-text">업로드된 파일 : {s3UploadedLink}</div>
+        <input onChange={tester}></input>
       </div>
       <div id="hashtag-content">
         <div id="hashtag-list">

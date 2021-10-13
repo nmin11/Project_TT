@@ -80,11 +80,14 @@ function DestinationReviews(props) {
             >
               <div id="dest-review-wrapper">
                 <img className="image-box" src={ele.image} alt={ele.image} />
-                <span id="dest-review-title">{ele.title}</span>
-                <span id="dest-review-description">
+                <div id="dest-wrapper">
+                <div id="dest-review-region">{ele.region}</div>
+                <div id="dest-review-title">{ele.title}</div>
+                <div id="dest-review-description">
                   {ele.content.slice(0, 30).replace(/.\s*$/, "").trim() + "..."}
-                </span>
+                </div>
                 <div className="hashtags">{ele.hashtags.map((el)=> "#"+el + " ")}</div>
+                </div>
               </div>
             </Link>
           </div>

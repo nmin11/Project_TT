@@ -9,16 +9,18 @@ axios.defaults.withCredentials = true;
 
 function Mypage(props) {
   const [reviews, setReviews] = useState([]);
+  const [userInfos, setUserinfos] = useState({});
 
   const history = useHistory();
 
   useEffect(() => {
-    getReview();
+    getUserInfo();
   }, []);
 
+  console.log(userInfos);
   // 유저 리뷰
   async function getReview() {
-    await axios(`${API_URL}/review/${''}`, {
+    await axios(`${API_URL}/profile/${userInfos.id}`, {
       method: 'GET',
       headers: {
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -29,16 +31,38 @@ function Mypage(props) {
       withCredentials: true,
     })
       .then((res) => {
-        let reviewObj = res.data;
+        let reviewObj = res.data.reviews;
         let objectToArray = [];
         let keys = Object.keys(reviewObj);
         for (let i = 0; i < keys.length; i++) {
           objectToArray.push({ ...reviewObj[keys[i]], id: keys[i] });
         }
         setReviews(objectToArray);
-        console.log(res.data);
+        console.log(res.data.reviews);
       })
       .catch((e) => {});
+  }
+
+  async function getUserInfo() {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('accessToken')}`;
+
+    await axios(`${API_URL}/token-valid-check`, {
+      method: 'GET',
+      headers: {
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Credentials': 'true',
+      },
+      withCredentials: true,
+    })
+      .then((res) => {
+        setUserinfos(res.data);
+      })
+
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   // 내가 쓴 리뷰 map

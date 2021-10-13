@@ -42,6 +42,7 @@ function App() {
         console.log(res.data);
         setUserInfo(res.data);
         console.log(userInfo);
+
         // useHistory를 사용하여 로그인 성공시 모달창을 끄고 mypage로 이동
         setModalOn(false);
         setLoginOn(true);
@@ -81,7 +82,7 @@ function App() {
             <Signup />
           </Route>
           <Route exact path="/review">
-            <Review loginOn={loginOn} userInfo={userInfo}/>
+            <Review loginOn={loginOn} userInfo={userInfo} />
           </Route>
           <Route exact path="/modifyProfile">
             <ModifyProfile setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />

@@ -138,10 +138,10 @@ function Review(props) {
               mode: "modifyPost",
             }}
           >
-            <button id="review-modify-btn">글수정</button>
+            <button className="classic-button">글수정</button>
           </Link>
         ) : null}
-        <button onClick={deleteReview}>글삭제</button>
+        <button className="classic-button" onClick={deleteReview}>글삭제</button>
       </span>
 
       <div>
@@ -154,7 +154,7 @@ function Review(props) {
                     {ele["comment-content"]}
                   </span>
                   {ele["comment-writer"] === props.userInfo.nickname ? (
-                    <button onClick={deleteComment(ele["id"])}>
+                    <button className="delete-button"onClick={deleteComment(ele["id"])}>
                       댓글 삭제
                     </button>
                   ) : null}
@@ -163,26 +163,28 @@ function Review(props) {
             })
           : null}
       </div>
-      <div>
+      <div className="comment-wrapper">
         {props.loginOn ? <span>{props.userInfo.nickname}</span> : null}
         {props.loginOn ? (
           <textarea
-            maxLength="500"
+            maxLength="250"
             rows="5"
-            cols="60"
+            cols="50"
             value={commentText}
             onChange={changeCommentText}
+            className="comment-box"
           ></textarea>
         ) : (
           <textarea
-            maxLength="500"
+            maxLength="250"
             rows="5"
-            cols="60"
+            cols="50"
             defaultValue="댓글을 작성하시려면 로그인이 필요합니다"
             readOnly
+            className="comment-box"
           ></textarea>
         )}
-        <button onClick={postComment}>등록</button>
+        <button className="classic-button"onClick={postComment}>등록</button>
       </div>
     </div>
   );

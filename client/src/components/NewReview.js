@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -7,9 +7,9 @@ import '../styles/NewReview.css';
 
 axios.defaults.withCredentials = true;
 
-function NewReview() {
+function NewReview(props) {
   const history = useHistory();
-  const { props, state, mode } = useLocation();
+  const { state, mode } = useLocation();
   const [fileInfo, setFileInfo] = useState('');
   const [s3UploadedLink, setS3UploadedLink] = useState('');
   const [reviewData, setReviewData] = useState({
@@ -64,17 +64,15 @@ function NewReview() {
     );
   }
   const hashtagHandler = (e) => {
-    if (e.target.value[0] !== '#' && e.key !== '#') {
-      e.target.value = '#' + e.target.value;
-    }
 
     if (e.key === 'Enter') {
       let ht = reviewData.hashtags;
-      ht.push(e.target.value.slice(1));
+      ht.push(e.target.value);
       setReviewData({ ...reviewData, hashtags: ht });
       e.target.value = '';
     }
   };
+  console.log(props)
   async function reviewModifyHandler() {
     await axios('http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/' + state.id, {
       method: 'PUT',

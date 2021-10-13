@@ -86,8 +86,8 @@ function App() {
           <Route exact path="/modifyProfile">
             <ModifyProfile setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />
           </Route>
-          <Route exact path="/newReview">
-            <NewReview />
+          <Route exact path="/newReview" >
+            <NewReview userInfo={userInfo}/>
           </Route>
         </Switch>
         <Footer /> {/* 푸터 */}

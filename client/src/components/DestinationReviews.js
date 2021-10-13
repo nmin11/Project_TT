@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Destination.css";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Destination.css';
+import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
@@ -45,23 +45,20 @@ function DestinationReviews(props) {
     <div id="dest-review-content">
       <div id="landing-top-content">
         <video width="300" height="200" muted autoplay="autoplay" loop>
-          <source
-            src="https://pixabay.com/ko/videos/download/video-52849_medium.mp4"
-            type="video/mp4"
-            muted
-          />
+          <source src="https://pixabay.com/ko/videos/download/video-52849_medium.mp4" type="video/mp4" muted />
         </video>
         <span id="dest-top-text">{`여행지 리뷰`}</span>
       </div>
       {props.loginOn ? (
         <Link
+          className="post-links"
           to={{
-            pathname: "/newReview",
-            mode: "newPost",
+            pathname: '/newReview',
+            mode: 'newPost',
             props: props,
           }}
         >
-          <button id="post-btn">글쓰기</button>
+          <button id="posts-btn">글쓰기</button>
         </Link>
       ) : null}
       <div className="reviews-block">
@@ -70,7 +67,7 @@ function DestinationReviews(props) {
             <Link
               className="review-link"
               to={{
-                pathname: "/review",
+                pathname: '/review',
                 state: {
                   id: ele.id,
                   author: ele.author,
@@ -87,6 +84,7 @@ function DestinationReviews(props) {
               <div id="dest-review-wrapper">
                 <img className="image-box" src={ele.image} alt={ele.image} />
                 <div id="dest-wrapper">
+
                   <div id="recommend-wrapper">
                     <div id="recommend-text">
                       <img

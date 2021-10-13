@@ -125,6 +125,7 @@
 #dest-review-region {
   font-size: 14px;
   margin-bottom: 5px;
+
 }
 
 #dest-wrapper {
@@ -132,3 +133,18 @@
   border-radius: 10px;
   padding: 5px;
 }
+
+
+#recommend-icon{
+  width : 12px;
+  height : 12px;
+}
+#recommend-wrapper{
+  display: flex;
+  position: absolute;
+  
+}
+#recommend-text{
+  text-align: right;
+}
+

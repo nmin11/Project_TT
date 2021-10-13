@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link, useHistory, withRouter } from 'react-router-dom';
-import '../styles/Header.css';
+import React from "react";
+import { Link, useHistory, withRouter } from "react-router-dom";
+import "../styles/Header.css";
 
 function Header(props) {
   const history = useHistory();
@@ -12,8 +12,8 @@ function Header(props) {
 
   const handleSignOut = () => {
     // 로컬스토리지 accessToken 지우기
-    localStorage.setItem('accessToken', '');
-    history.push('/');
+    localStorage.setItem("accessToken", "");
+    history.push("/");
     props.setLoginOn(false);
   };
 
@@ -54,11 +54,13 @@ function Header(props) {
               </button>
             </li>
           )}
-          <li>
-            <Link className="text-link" to="/signUp">
-              회원가입
-            </Link>
-          </li>
+          {props.loginOn ? null : (
+            <li>
+              <Link className="text-link" to="/signUp">
+                회원가입
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

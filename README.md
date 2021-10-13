@@ -41,3 +41,12 @@ Project TT는 여러분에게 국내 여행지를 리뷰하고 추천해주는 �
 ### Server Side
 ![Back Side](https://user-images.githubusercontent.com/75058239/137068717-ba01815f-2447-429b-9608-37e5c290d461.png)
 
+<br>
+
+## Team
+
+| 팀원 | 역할 |
+| :---: | :---: |
+| 남궁민 | Back-End |
+| 황재성 | Front-End |
+| 이준희 | Front-End |

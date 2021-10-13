@@ -65,7 +65,6 @@ function DestinationReviews(props) {
               className="review-link"
               to={{
                 pathname: "/review",
-                props: props,
                 state: {
                   id: ele.id,
                   author: ele.author,

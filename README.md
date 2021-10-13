@@ -1,4 +1,4 @@
-# 🇰🇷 Project TT
+# Project TT
 
 ![](https://user-images.githubusercontent.com/69352020/136123160-3504155e-9fb3-46ea-b26b-17f7f80ce5da.jpg)
 
@@ -36,5 +36,17 @@ Project TT는 여러분에게 국내 여행지를 리뷰하고 추천해주는 �
 ## Flow Chart
 
 ### Client Side
+![Client Side](https://user-images.githubusercontent.com/75058239/137068669-21b96bf8-e007-4923-bdf7-4fde2a59c5f1.png)
 
 ### Server Side
+![Back Side](https://user-images.githubusercontent.com/75058239/137068717-ba01815f-2447-429b-9608-37e5c290d461.png)
+
+<br>
+
+## Team
+
+| 팀원 | 역할 |
+| :---: | :---: |
+| 남궁민 | Back-End |
+| 황재성 | Front-End |
+| 이준희 | Front-End |

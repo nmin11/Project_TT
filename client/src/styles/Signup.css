@@ -72,11 +72,16 @@ input {
   text-decoration: none;
   font-size: 16px;
   display: block;
-  margin-top: 1rem;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.signup-btn:hover {
+  background-color: teal;
 }
 
 #signup-title {
-    font-size: 22px;
-    margin-top: 10px;
-    font-weight: 500;
+  font-size: 22px;
+  margin-top: 15px;
+  font-weight: 500;
 }

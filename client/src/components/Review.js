@@ -7,13 +7,12 @@ import "../styles/Review.css";
 axios.defaults.withCredentials = true;
 
 function Review(props) {
-
   const history = useHistory();
   const { state } = useLocation();
 
   const [newComment, setNewComment] = useState("1");
   const [commentText, setCommentText] = useState("");
-  const [comment, setComment] = useState([])
+  const [comment, setComment] = useState([]);
   const changeCommentText = (e) => {
     setCommentText(e.target.value);
   };
@@ -23,7 +22,8 @@ function Review(props) {
   }, [newComment]);
   async function getComments() {
     await axios(
-      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/" + state.id,
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/" +
+        state.id,
       {
         method: "GET",
         headers: {
@@ -46,7 +46,6 @@ function Review(props) {
       })
       .catch((e) => {});
   }
-  console.log(props.userInfo)
   async function deleteReview() {
     await axios(
       "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/" +
@@ -87,11 +86,31 @@ function Review(props) {
       }
     )
       .then((res) => {
-        setCommentText("")
-        setNewComment(newComment+1)
+        setNewComment(newComment + 1);
       })
       .catch((e) => {});
-    }
+  }
+  const deleteComment = (id) => async (e) => {
+    await axios(
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/comment/" +
+        id,
+      {
+        method: "DELETE",
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "DELETE",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        withCredentials: true,
+      }
+    ).then((res) => {
+      setCommentText("");
+      setNewComment(newComment + 1);
+    })
+    .catch((e) => {});
+  };
+
   return (
     <div id="review-header">
       <div id="review-title">{state.title}</div>
@@ -120,22 +139,26 @@ function Review(props) {
       </span>
 
       <div>
-        {comment.length !== 0 ? comment.map((ele) => {
-            return (
-              <div class="comment-content">
-                <span class="comment-user">{ele['comment-writer']}</span>
-                <span class="comment-createdat">
-                </span>
-                <span class="comment-description">{ele['comment-content']}</span>
-              </div>
-            );
-          }
-        ) : null}
+        {comment.length !== 0
+          ? comment.map((ele) => {
+              return (
+                <div class="comment-content">
+                  <span class="comment-user">{ele["comment-writer"]}</span>
+                  <span class="comment-description">
+                    {ele["comment-content"]}
+                  </span>
+                  {ele["comment-writer"] === props.userInfo.nickname ? (
+                    <button onClick={deleteComment(ele["id"])}>
+                      댓글 삭제
+                    </button>
+                  ) : null}
+                </div>
+              );
+            })
+          : null}
       </div>
       <div>
-      {props.loginOn ?
-        <span>{}</span> : <span>로그인이 필요합니다</span>
-      }
+        {props.loginOn ? <span>{}</span> : <span>로그인이 필요합니다</span>}
         <textarea
           maxLength="500"
           rows="5"

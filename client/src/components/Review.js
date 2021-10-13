@@ -72,15 +72,19 @@ function Review() {
       <img id="review-img" src={state.image} alt={state.image}></img>
       <div id="reviewer-description">{state.content}</div>
       <span>
+      {props.loginOn ? 
       <Link
         to={{
-          pathname: '/ModifyReview',
+          pathname: '/newReview',
+          props: props,
           state: state,
+          mode: "modifyPost",
         }}
       >
         <button id="review-modify-btn">글수정</button>
-      </Link>
       <button onClick={deleteReview}>글삭제(테스트용 아무나 삭제 가능)</button>
+      </Link>
+      : null}
       </span>
 
       <div>

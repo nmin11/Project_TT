@@ -87,7 +87,24 @@
   margin-bottom: 20px;
 }
 
+#logo-link {
+  text-decoration: none;
+}
+
 .info-btn {
+  background-color: #3d3d3d; /* Green */
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  font-size: 16px;
+  display: block;
   margin-top: -10px;
   margin-bottom: 40px;
+  cursor: pointer;
+}
+
+.info-btn:hover {
+  background-color: teal;
 }

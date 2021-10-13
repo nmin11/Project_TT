@@ -18,4 +18,7 @@ public class BoardHashService {
         boardHashRepository.save(boardHash);
     }
 
+    public void deleteBoardHash(BoardHash boardHash) {
+        boardHashRepository.delete(boardHash);
+    }
 }

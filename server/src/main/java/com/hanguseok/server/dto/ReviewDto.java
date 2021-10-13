@@ -1,6 +1,7 @@
 package com.hanguseok.server.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class ReviewDto {
     private String title;
     private String content;
     private String region;
+    private String image;
     private List<String> hashtags;
 
 }

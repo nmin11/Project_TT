@@ -48,4 +48,8 @@ public class ReviewBoard extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<Recommend> recommends = new ArrayList<>();
 
+    public void setView(int view) {
+        this.view = view;
+    }
+
 }

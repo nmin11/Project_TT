@@ -36,5 +36,8 @@ Project TT는 여러분에게 국내 여행지를 리뷰하고 추천해주는 �
 ## Flow Chart
 
 ### Client Side
+![Client Side](https://user-images.githubusercontent.com/75058239/137068669-21b96bf8-e007-4923-bdf7-4fde2a59c5f1.png)
 
 ### Server Side
+![Back Side](https://user-images.githubusercontent.com/75058239/137068717-ba01815f-2447-429b-9608-37e5c290d461.png)
+

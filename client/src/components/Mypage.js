@@ -15,9 +15,8 @@ function Mypage(props) {
 
   useEffect(() => {
     getUserInfo();
-  }, []);
+  }, [userInfos]);
 
-  console.log(userInfos);
   // 유저 리뷰
   async function getReview() {
     await axios(`${API_URL}/profile/${userInfos.id}`, {
@@ -38,7 +37,6 @@ function Mypage(props) {
           objectToArray.push({ ...reviewObj[keys[i]], id: keys[i] });
         }
         setReviews(objectToArray);
-        console.log(res.data.reviews);
       })
       .catch((e) => {});
   }
@@ -58,6 +56,7 @@ function Mypage(props) {
     })
       .then((res) => {
         setUserinfos(res.data);
+        getReview()
       })
 
       .catch((err) => {
@@ -112,7 +111,6 @@ function Mypage(props) {
       withCredentials: true,
     })
       .then((res) => {
-        console.log(res.data);
         // 탈퇴 완료 후 메인 페이지로 이동
         props.setLoginOn(false);
         history.push('/');

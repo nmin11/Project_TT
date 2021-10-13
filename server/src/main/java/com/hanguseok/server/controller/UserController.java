@@ -136,7 +136,6 @@ public class UserController {
                     put("id", user.getId());
                     put("email", user.getEmail());
                     put("nickname", user.getNickname());
-                    put("reviews", user.getReviews());
                 }
             });
         } else {

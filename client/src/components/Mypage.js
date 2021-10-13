@@ -16,7 +16,7 @@ function Mypage(props) {
   useEffect(() => {
     getUserInfo();
     getReview();
-  }, []);
+  }, [props.userInfo]);
 
   // 유저 리뷰
   async function getReview() {
@@ -57,7 +57,7 @@ function Mypage(props) {
     })
       .then((res) => {
         setUserinfos(res.data);
-        getReview();
+        console.log(userInfos);
       })
 
       .catch((err) => {

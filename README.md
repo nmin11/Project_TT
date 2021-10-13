@@ -1,4 +1,4 @@
-# 🇰🇷 Project TT
+# Project TT
 
 ![](https://user-images.githubusercontent.com/69352020/136123160-3504155e-9fb3-46ea-b26b-17f7f80ce5da.jpg)
 

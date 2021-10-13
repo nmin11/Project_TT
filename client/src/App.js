@@ -81,7 +81,7 @@ function App() {
             <Signup />
           </Route>
           <Route exact path="/review">
-            <Review />
+            <Review loginOn={loginOn} userInfo={userInfo}/>
           </Route>
           <Route exact path="/modifyProfile">
             <ModifyProfile setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />

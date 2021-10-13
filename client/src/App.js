@@ -11,7 +11,6 @@ import Review from './components/Review';
 import ModifyProfile from './components/ModifyProfile';
 import Signin from './components/Signin';
 import NewReview from './components/NewReview';
-import ModifyReview from './components/ModifyReview';
 import { API_URL } from './config/constants';
 import axios from 'axios';
 
@@ -89,9 +88,6 @@ function App() {
           </Route>
           <Route exact path="/newReview">
             <NewReview />
-          </Route>
-          <Route exact path="/modifyReview">
-            <ModifyReview />
           </Route>
         </Switch>
         <Footer /> {/* 푸터 */}

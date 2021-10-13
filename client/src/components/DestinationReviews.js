@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import '../styles/Destination.css';
-import axios from 'axios';
-import { dummyMypageReview } from '../dummy/dummyData';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/Destination.css";
+import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
@@ -40,15 +39,19 @@ function DestinationReviews(props) {
     <div id="dest-review-content">
       <div id="landing-top-content">
         <video width="300" height="200" muted autoplay="autoplay" loop>
-          <source src="https://pixabay.com/ko/videos/download/video-52849_medium.mp4" type="video/mp4" muted />
+          <source
+            src="https://pixabay.com/ko/videos/download/video-52849_medium.mp4"
+            type="video/mp4"
+            muted
+          />
         </video>
         <span id="dest-top-text">{`여행지 리뷰`}</span>
       </div>
       {props.loginOn ? (
         <Link
-          className="post-links"
           to={{
-            pathname: '/newReview',
+            pathname: "/newReview",
+            mode: "newPost",
             props: props,
           }}
         >
@@ -61,7 +64,7 @@ function DestinationReviews(props) {
             <Link
               className="review-link"
               to={{
-                pathname: '/review',
+                pathname: "/review",
                 props: props,
                 state: {
                   id: ele.id,
@@ -79,7 +82,10 @@ function DestinationReviews(props) {
               <div id="dest-review-wrapper">
                 <img className="image-box" src={ele.image} alt={ele.image} />
                 <span id="dest-review-title">{ele.title}</span>
-                <span id="dest-review-description">{ele.content.slice(0, 30).replace(/.\s*$/, '').trim() + '...'}</span>
+                <span id="dest-review-description">
+                  {ele.content.slice(0, 30).replace(/.\s*$/, "").trim() + "..."}
+                </span>
+                <div className="hashtags">{ele.hashtags.map((el)=> "#"+el + " ")}</div>
               </div>
             </Link>
           </div>

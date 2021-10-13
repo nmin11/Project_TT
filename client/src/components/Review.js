@@ -46,7 +46,13 @@ function Review(props) {
       })
       .catch((e) => {});
   }
+  console.log(props.userInfo.nickname);
+  console.log(state.author);
   async function deleteReview() {
+    if (props.userInfo.nickname !== state.author) {
+      alert("작성자 권한이 없습니다");
+      return;
+    }
     await axios(
       "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/" +
         state.id,
@@ -87,6 +93,7 @@ function Review(props) {
     )
       .then((res) => {
         setNewComment(newComment + 1);
+        setCommentText("")
       })
       .catch((e) => {});
   }
@@ -104,11 +111,12 @@ function Review(props) {
         },
         withCredentials: true,
       }
-    ).then((res) => {
-      setCommentText("");
-      setNewComment(newComment + 1);
-    })
-    .catch((e) => {});
+    )
+      .then((res) => {
+        setCommentText("");
+        setNewComment(newComment + 1);
+      })
+      .catch((e) => {});
   };
 
   return (
@@ -131,11 +139,9 @@ function Review(props) {
             }}
           >
             <button id="review-modify-btn">글수정</button>
-            <button onClick={deleteReview}>
-              글삭제(테스트용 아무나 삭제 가능)
-            </button>
           </Link>
         ) : null}
+        <button onClick={deleteReview}>글삭제</button>
       </span>
 
       <div>
@@ -158,14 +164,24 @@ function Review(props) {
           : null}
       </div>
       <div>
-        {props.loginOn ? <span>{}</span> : <span>로그인이 필요합니다</span>}
-        <textarea
-          maxLength="500"
-          rows="5"
-          cols="60"
-          value={commentText}
-          onChange={changeCommentText}
-        ></textarea>
+        {props.loginOn ? <span>{props.userInfo.nickname}</span> : null}
+        {props.loginOn ? (
+          <textarea
+            maxLength="500"
+            rows="5"
+            cols="60"
+            value={commentText}
+            onChange={changeCommentText}
+          ></textarea>
+        ) : (
+          <textarea
+            maxLength="500"
+            rows="5"
+            cols="60"
+            defaultValue="댓글을 작성하시려면 로그인이 필요합니다"
+            readOnly
+          ></textarea>
+        )}
         <button onClick={postComment}>등록</button>
       </div>
     </div>

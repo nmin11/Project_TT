@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface RecommendRepository extends JpaRepository<Recommend, Long> {
 
-    Optional<Recommend> findByUser(User user);
+    List<Recommend> findByUser(User user);
 
     List<Recommend> findByReview(ReviewBoard review);
 

@@ -200,8 +200,10 @@ public class ReviewBoardController {
             User user = userService.findUserById(dto.getUserId());
             ReviewBoard review = reviewBoardService.findReviewById(dto.getReviewId());
             int len;
-            if (recommendService.alreadyRecommend(user)) {
+            if (recommendService.alreadyRecommend(user, review)) {
+                System.out.println("--- 리뷰를 이미 추천함 ---");
                 recommendService.deleteRecommend(user, review);
+                System.out.println("--- 추천 관계 삭제 ---");
                 len = recommendService.findByReview(review).size();
 
                 return ResponseEntity.ok().body(new HashMap<>() {
@@ -211,6 +213,7 @@ public class ReviewBoardController {
                     }
                 });
             } else {
+                System.out.println("--- 리뷰를 추천하지 않았음 ---");
                 recommendService.createRecommend(user, review);
                 len = recommendService.findByReview(review).size();
 
@@ -222,6 +225,7 @@ public class ReviewBoardController {
                 });
             }
         } catch (Exception e) {
+            log.error("추천 미작동 에러 : " + e);
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
                     put("message", "게시글 추천에 실패했습니다!");

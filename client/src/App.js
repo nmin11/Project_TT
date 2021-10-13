@@ -63,7 +63,7 @@ function App() {
           userInfo={userInfo}
           setUserInfo={setUserInfo}
         />
-        <Header modalOn={modalOn} setModalOn={setModalOn} loginOn={loginOn} setLoginOn={setLoginOn} />
+        <Header modalOn={modalOn} setModalOn={setModalOn} setUserInfo={setUserInfo} loginOn={loginOn} setLoginOn={setLoginOn} />
         {/* 헤더(로고, 네비게이션) */}
         <Switch>
           <Route exact path="/">

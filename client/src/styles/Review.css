@@ -86,11 +86,11 @@
   cursor: pointer;
 }
 .comment-box{
-  display: inline-block;
+  display: block;
   resize: none;
 }
 .comment-wrapper{
-  text-align: center;
+  align-content: center;
 }
 .delete-button{
   align-self: flex-end;
@@ -100,4 +100,12 @@
   border-radius: 20px;
   color: white;
   font-size: 13px;
+}
+.userNickname{
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+#button-wrapper{
+  text-align: end;
 }

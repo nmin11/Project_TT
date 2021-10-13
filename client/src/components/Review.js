@@ -141,6 +141,7 @@ function Review(props) {
             <button className="classic-button">글수정</button>
           </Link>
         ) : null}
+        <span>   </span>
         <button className="classic-button" onClick={deleteReview}>글삭제</button>
       </span>
 
@@ -164,7 +165,7 @@ function Review(props) {
           : null}
       </div>
       <div className="comment-wrapper">
-        {props.loginOn ? <span>{props.userInfo.nickname}</span> : null}
+        {props.loginOn ? <div className="userNickname">{props.userInfo.nickname}</div> : null}
         {props.loginOn ? (
           <textarea
             maxLength="250"
@@ -184,7 +185,9 @@ function Review(props) {
             className="comment-box"
           ></textarea>
         )}
+        <div id="button-wrapper">
         <button className="classic-button"onClick={postComment}>등록</button>
+        </div>
       </div>
     </div>
   );

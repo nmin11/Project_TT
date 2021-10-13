@@ -13,12 +13,14 @@ function Review(props) {
   const [newComment, setNewComment] = useState("1");
   const [commentText, setCommentText] = useState("");
   const [comment, setComment] = useState([]);
+  const [recommandCount, setRecommandCount] = useState(0);
   const changeCommentText = (e) => {
     setCommentText(e.target.value);
   };
 
   useEffect(() => {
     getComments();
+    console.log("반복테스트")
   }, [newComment]);
   async function getComments() {
     await axios(
@@ -45,9 +47,9 @@ function Review(props) {
         setComment(objectToArray);
       })
       .catch((e) => {});
+      setRecommandCount(state.recommend);
   }
-  console.log(props.userInfo.nickname);
-  console.log(state.author);
+  
   async function deleteReview() {
     if (props.userInfo.nickname !== state.author) {
       alert("작성자 권한이 없습니다");
@@ -93,9 +95,39 @@ function Review(props) {
     )
       .then((res) => {
         setNewComment(newComment + 1);
-        setCommentText("")
+        setCommentText("");
       })
       .catch((e) => {});
+  }
+  async function postRecommand () {
+    await axios(
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/recommend",
+      {
+        method: "POST",
+        data: {
+          userId: props.userInfo.id,
+          reviewId: state.id,
+        },
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        withCredentials: true,
+      }
+    )
+      .then((res) => {
+        if(res.data.message === "게시글을 추천했습니다."){
+          setRecommandCount(recommandCount + 1)
+        }else {
+          alert('추천이 취소됐습니다.')
+          setRecommandCount(recommandCount - 1)
+        }
+      })
+      .catch((e) => {
+          alert("오류가 발생했습니다: ", e.message);
+      });
   }
   const deleteComment = (id) => async (e) => {
     await axios(
@@ -128,6 +160,10 @@ function Review(props) {
 
       <img id="review-img" src={state.image} alt={state.image}></img>
       <div id="reviewer-description">{state.content}</div>
+      <button onClick={postRecommand}>
+        <img src="/images/heart_recommand.png" id="heart-img"></img>
+      </button>
+      <div>{recommandCount}</div>
       <span>
         {props.loginOn ? (
           <Link
@@ -141,8 +177,10 @@ function Review(props) {
             <button className="classic-button">글수정</button>
           </Link>
         ) : null}
-        <span>   </span>
-        <button className="classic-button" onClick={deleteReview}>글삭제</button>
+        <span> </span>
+        <button className="classic-button" onClick={deleteReview}>
+          글삭제
+        </button>
       </span>
 
       <div>
@@ -155,7 +193,10 @@ function Review(props) {
                     {ele["comment-content"]}
                   </span>
                   {ele["comment-writer"] === props.userInfo.nickname ? (
-                    <button className="delete-button"onClick={deleteComment(ele["id"])}>
+                    <button
+                      className="delete-button"
+                      onClick={deleteComment(ele["id"])}
+                    >
                       댓글 삭제
                     </button>
                   ) : null}
@@ -165,7 +206,9 @@ function Review(props) {
           : null}
       </div>
       <div className="comment-wrapper">
-        {props.loginOn ? <div className="userNickname">{props.userInfo.nickname}</div> : null}
+        {props.loginOn ? (
+          <div className="userNickname">{props.userInfo.nickname}</div>
+        ) : null}
         {props.loginOn ? (
           <textarea
             maxLength="250"
@@ -186,7 +229,9 @@ function Review(props) {
           ></textarea>
         )}
         <div id="button-wrapper">
-        <button className="classic-button"onClick={postComment}>등록</button>
+          <button className="classic-button" onClick={postComment}>
+            등록
+          </button>
         </div>
       </div>
     </div>

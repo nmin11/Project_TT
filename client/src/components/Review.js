@@ -88,21 +88,30 @@ function Review(props) {
       })
       .catch((e) => {});
   }
-  async function postRecommand() {
-    await axios('http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/recommend', {
-      method: 'POST',
-      data: {
-        userId: props.userInfo.id,
-        reviewId: state.id,
-      },
-      headers: {
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST',
-        'Access-Control-Allow-Credentials': 'true',
-      },
-      withCredentials: true,
-    })
+
+  async function postRecommand () {
+    if(!props.loginOn){
+      alert('로그인이 필요합니다');
+      return
+    }
+    await axios(
+      "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/recommend",
+      {
+        method: "POST",
+        data: {
+          userId: props.userInfo.id,
+          reviewId: state.id,
+        },
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        withCredentials: true,
+      }
+    )
+
       .then((res) => {
         if (res.data.message === '게시글을 추천했습니다.') {
           setRecommandCount(recommandCount + 1);

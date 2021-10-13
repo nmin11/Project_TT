@@ -100,6 +100,10 @@ function Review(props) {
       .catch((e) => {});
   }
   async function postRecommand () {
+    if(!props.loginOn){
+      alert('로그인이 필요합니다');
+      return
+    }
     await axios(
       "http://ec2-3-35-140-107.ap-northeast-2.compute.amazonaws.com:8080/review/recommend",
       {

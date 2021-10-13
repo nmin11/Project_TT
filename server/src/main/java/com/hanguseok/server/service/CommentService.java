@@ -35,15 +35,18 @@ public class CommentService {
     }
 
     public Comment editComment(Long id, String content) {
-        Comment comment = Comment.builder()
-                .id(id)
+        Comment comment = commentRepository.findById(id).get();
+        Comment updatedComment = Comment.builder()
+                .id(comment.getId())
+                .user(comment.getUser())
+                .review(comment.getReview())
                 .content(content)
                 .build();
-        commentRepository.save(comment);
-        return comment;
+        commentRepository.save(updatedComment);
+        return updatedComment;
     }
 
     public void deleteComment(Long id) {
-        reviewBoardRepository.deleteById(id);
+        commentRepository.deleteById(id);
     }
 }

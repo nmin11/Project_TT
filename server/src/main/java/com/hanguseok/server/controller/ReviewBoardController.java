@@ -2,18 +2,13 @@ package com.hanguseok.server.controller;
 
 import com.hanguseok.server.dto.RecommendDto;
 import com.hanguseok.server.dto.ReviewDto;
-import com.hanguseok.server.entity.BoardHash;
-import com.hanguseok.server.entity.Hashtag;
-import com.hanguseok.server.entity.ReviewBoard;
-import com.hanguseok.server.entity.User;
+import com.hanguseok.server.entity.*;
 import com.hanguseok.server.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +21,6 @@ import java.util.List;
 public class ReviewBoardController {
 
     private final ReviewBoardService reviewBoardService;
-    private final S3Uploader s3Uploader;
     private final HashtagService hashtagService;
     private final UserService userService;
     private final BoardHashService boardHashService;
@@ -48,7 +42,6 @@ public class ReviewBoardController {
                                 put("content", review.getContent());
                                 put("region", review.getRegion());
                                 put("author", review.getUser().getNickname());
-                                put("comments", review.getComments());
                                 List<String> hashtags = new ArrayList<>();
                                 for (BoardHash boardHash : review.getHashtags()) {
                                     hashtags.add(boardHash.getHashtag().getName());
@@ -72,13 +65,27 @@ public class ReviewBoardController {
     public ResponseEntity<?> findReviewById(@PathVariable("id") Long id) {
         try {
             ReviewBoard review = reviewBoardService.findReviewById(id);
+            review.setView(review.getView() + 1);
+            reviewBoardService.saveReview(review);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());
                     put("title", review.getTitle());
                     put("image", review.getImage());
                     put("content", review.getContent());
-                    put("comments", review.getComments());
+                    put("comments", new HashMap<>() {
+                        {
+                            List<Comment> comments = review.getComments();
+                            for (Comment comment : comments) {
+                                put(comment.getId(), new HashMap<>() {
+                                    {
+                                        put("comment-writer", comment.getUser().getNickname());
+                                        put("comment-content", comment.getContent());
+                                    }
+                                });
+                            }
+                        }
+                    });
                     List<String> hashtags = new ArrayList<>();
                     for (BoardHash boardHash : review.getHashtags()) {
                         hashtags.add(boardHash.getHashtag().getName());
@@ -101,7 +108,7 @@ public class ReviewBoardController {
     }
 
     @PostMapping
-    public ResponseEntity<?> uploadReview(@RequestParam("data") MultipartFile multipartFile, @RequestBody ReviewDto dto) throws IOException {
+    public ResponseEntity<?> uploadReview(@RequestBody ReviewDto dto) {
         try {
             List<Hashtag> hashtags = new ArrayList<>();
             for (String el : dto.getHashtags()) {
@@ -127,16 +134,6 @@ public class ReviewBoardController {
                 boardHashService.connectTag(boardHash);
             }
 
-            String uploadUrl = s3Uploader.upload(review.getId(), multipartFile, "static");
-            review.builder()
-                    .title(review.getTitle())
-                    .content(review.getContent())
-                    .region(review.getRegion())
-                    .view(0)
-                    .image(uploadUrl)
-                    .build();
-            reviewBoardService.saveReview(review);
-
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());
@@ -148,6 +145,7 @@ public class ReviewBoardController {
                 }
             });
         } catch (Exception e) {
+            log.error("리뷰 등록 에러 : " + e);
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
                     put("message", "잘못된 등록 요청입니다!");
@@ -175,9 +173,9 @@ public class ReviewBoardController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editReview(@RequestParam("data") MultipartFile multipartFile, @PathVariable("id") Long id, ReviewDto dto) {
+    public ResponseEntity<?> editReview(@PathVariable("id") Long id, @RequestBody ReviewDto dto) {
         try {
-            ReviewBoard review = reviewBoardService.editReview(id, dto, multipartFile);
+            ReviewBoard review = reviewBoardService.editReview(id, dto);
             return ResponseEntity.ok().body(new HashMap<>() {
                 {
                     put("id", review.getId());
@@ -190,7 +188,7 @@ public class ReviewBoardController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new HashMap<>() {
                 {
-                    put("message", "수정 작업에 실패했습니다");
+                    put("message", "수정 작업에 실패했습니다.");
                 }
             });
         }

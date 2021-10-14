@@ -15,6 +15,7 @@ function Header(props) {
     localStorage.setItem("accessToken", "");
     history.push("/");
     props.setLoginOn(false);
+    props.setUserInfo({});
   };
 
   return (

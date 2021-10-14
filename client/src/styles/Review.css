@@ -32,7 +32,8 @@
 
 #review-img {
   margin-top: 25px;
-  width: 70%;
+  width: 400px;
+  height: 300px;
   object-fit: cover;
   border-radius: 10px;
   box-shadow: 0px 0px 2px 5px rgb(206, 206, 206);
@@ -46,21 +47,20 @@
 .comment-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 30px;
-  width: 800px;
-  height: 90px;
+  margin: 10px;
+  padding: 5px;
+  padding-bottom: 12px;
+  width: 700px;
   object-fit: cover;
   border: 1px solid rgb(202, 202, 202);
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px 3px rgb(206, 206, 206);
+  border-radius: 7px;
 }
 
 .comment-user {
   font-size: 15px;
   font-weight: 700;
-  margin-top: 10px;
+  margin-top: 5px;
+  margin-left: 5px;
   margin-bottom: 10px;
 }
 
@@ -71,5 +71,94 @@
 
 .comment-description {
   font-size: 14px;
+  margin-left: 3px;
+}
+.classic-button {
+  background-color: #3d3d3d;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.classic-button:hover {
+  background-color: teal;
+}
+
+.comment-box {
+  display: block;
+  resize: none;
+}
+.comment-wrapper {
+  align-content: center;
+}
+.delete-button {
+  align-self: flex-end;
+  width: 70px;
+  background-color: #3d3d3d;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: teal;
+}
+
+.userNickname {
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+#review-modify-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#button-wrapper {
+  display: flex;
+  justify-content: center;
+}
+#heart-img {
+  width: 40px;
+  height: 40px;
+}
+
+.userNickname {
+  font-size: 15px;
+}
+
+#reviewer {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+#like-btn {
+  border: none;
+  cursor: pointer;
+  background-color: white;
+}
+
+#like-btn > img {
+  width: 30px;
+  height: 30px;
+}
+
+#like-btn > img:hover {
+  opacity: 0.5;
+}
+
+#recommand-count {
+  font-size: 15px;
+  font-weight: 800;
 }

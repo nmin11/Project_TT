@@ -18,6 +18,7 @@ function App() {
   const [loginOn, setLoginOn] = useState(false); // 로그인 여부 (test : true로 바꾸고 개발)
   const [modalOn, setModalOn] = useState(false); // 모달 오픈 여부
   const [userInfo, setUserInfo] = useState({}); // 로그인 회원 정보
+  const [reviews, setReviews] = useState({});
 
   useEffect(() => {
     getUserInfo();
@@ -63,17 +64,17 @@ function App() {
           userInfo={userInfo}
           setUserInfo={setUserInfo}
         />
-        <Header modalOn={modalOn} setModalOn={setModalOn} loginOn={loginOn} setLoginOn={setLoginOn} />
+        <Header modalOn={modalOn} setModalOn={setModalOn} setUserInfo={setUserInfo} loginOn={loginOn} setLoginOn={setLoginOn} />
         {/* 헤더(로고, 네비게이션) */}
         <Switch>
           <Route exact path="/">
-            <ThemeTravel />
+            <ThemeTravel reviews={reviews} />
           </Route>
           <Route exact path="/destinationReviews">
             <DestinationReviews setLoginOn={setLoginOn} loginOn={loginOn} userInfo={userInfo} />
           </Route>
           <Route exact path="/themeTravel">
-            <ThemeTravel />
+            <ThemeTravel reviews={reviews} />
           </Route>
           <Route exact path="/myPage">
             <Mypage setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />
@@ -87,8 +88,8 @@ function App() {
           <Route exact path="/modifyProfile">
             <ModifyProfile setLoginOn={setLoginOn} userInfo={userInfo} setUserInfo={setUserInfo} />
           </Route>
-          <Route exact path="/newReview" >
-            <NewReview userInfo={userInfo}/>
+          <Route exact path="/newReview">
+            <NewReview userInfo={userInfo} />
           </Route>
         </Switch>
         <Footer /> {/* 푸터 */}

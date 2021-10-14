@@ -173,8 +173,8 @@ function NewReview(props) {
         <button id="image-upload-btn" onClick={imageUploadHandler}>
           이미지 업로드
         </button>
-        <div id="upload-text">업로드된 파일 : {s3UploadedLink}</div>
-        <input onChange={tester}></input>
+        {/* <div id="upload-text">업로드된 파일 : {s3UploadedLink}</div> */}
+        {/* <input onChange={tester}></input> */}
       </div>
       <div id="hashtag-content">
         <div id="hashtag-list">
